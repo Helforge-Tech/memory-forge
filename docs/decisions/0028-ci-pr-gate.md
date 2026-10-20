@@ -12,7 +12,7 @@
 - The job calls the **repo's own commands** (`task ...`, see [app-commands](../../memory-kit/standards/app-commands.md)), not tool invocations copied into the workflow. Where a command is missing, the repo adds it through the gap route.
 - A check that fails on today's code runs in **baseline mode** ([0025](0025-check-baselines-and-kinds-map.md)), so the gate can be switched on in an existing repo on day one and the count only goes down.
 - It is **required where the plan allows branch protection**. Turning that on is a repo setting and needs the owner's go-ahead ([0027](0027-what-a-go-ahead-covers.md)). Where the plan does not allow it, the gap is recorded in `docs/state/gaps.md`.
-- This does not change 0021: the gate is Ubuntu-only, code-quality-only, and adds the `pull_request` trigger. An app's own push-triggered workflow stays as 0021 says.
+- **Triggers:** `pull_request`, and `push` to `main` only, so a push to a PR branch runs the checks once, not twice. This supersedes the "on every push" part of [0021](0021-ci-code-quality-only.md) for repos that adopt the gate; the rest of 0021 stands (Ubuntu only, code-quality only, full build local). 0021's quota reasoning was written for a private repo; this repo is now public, and the standard keeps the checks cheap regardless.
 
 ## Alternatives
 - **Several required jobs, one per check.** Finer failure reports, but every new check needs a settings change to become required, and the required list drifts from the workflow. One job avoids both.
