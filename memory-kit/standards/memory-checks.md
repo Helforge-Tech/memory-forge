@@ -16,7 +16,7 @@ check: memory-kit/checks/test-memory-check.sh, run by task test; task memory run
 2. **These rules hold**, each named as in the violation line:
    - `repo-map-missing`: every path in the `AGENTS.md` repo map exists.
    - `repo-map-unlisted`: every tracked top-level folder (not starting with `.`) is in the repo map.
-   - `ref-missing`: every markdown link in `AGENTS.md`, `CLAUDE.md`, the kit README, skills, playbooks and standards points at a path that exists. Links in fenced code blocks are examples and are skipped.
+   - `ref-missing`: every markdown link in `AGENTS.md`, `CLAUDE.md`, the kit README, skills, playbooks and standards points at a path that exists. Links in code blocks (fenced with three backticks or `~~~`, indented or not) and in inline code are examples and are skipped. Not checked: reference-style links (`[x]: path`) and paths that contain parentheses.
    - `ref-archived`: no such link points into a folder that holds an `ARCHIVED.md`.
    - `command-missing`: every `` `task <name>` `` in `AGENTS.md` is a task in `Taskfile.yaml`.
    - `root-size`: `AGENTS.md` stays under 16000 bytes (`MEMORY_ROOT_BUDGET` sets another budget).
