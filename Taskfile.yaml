@@ -1,0 +1,15 @@
+version: "3"
+
+# Commands for running and checking this repo's outputs. Run inside the nix dev
+# shell (direnv, or `nix develop`). Decision 0003.
+#
+# This repo has no outputs of its own yet. A project made from it adds its commands
+# here (standard app-commands). Setting a project up is a playbook the agent
+# follows from memory-kit/, not a task (decision 0020).
+
+tasks:
+  default:
+    desc: List the tasks
+    silent: true
+    cmds:
+      - task --list
