@@ -8,7 +8,7 @@ A template for a repeatable way to build things (apps, sites, services, docs, Ia
 |---|---|---|
 | `memory-kit/` | Playbooks, standards, checks, templates. Portable: no project or personal content. Start at `standards/INDEX.md` and `playbooks/INDEX.md` | active; grows from tasks |
 | `knowledge/` | Cross-project notes (Obsidian vault); see `knowledge/INDEX.md` | empty skeleton |
-| `docs/` | The memory design (`planning/`), decisions (`decisions/`, numbered, superseded never edited), state (handoffs, gaps) and the memory acceptance test (`acceptance/`) | in use |
+| `docs/` | The memory design (`planning/`), decisions (`decisions/`, numbered, superseded never edited), state (handoffs, gaps), plans (`plans/`, created by the first plan) and the memory acceptance test (`acceptance/`) | in use |
 
 ## Commands
 
