@@ -73,6 +73,8 @@ Issue: #13
 Branch: 13-do-thing
 Commits: 3f2a1c9 feat(app): add the thing
 PR: https://github.com/<org>/<repo>/pull/14 (checks: pending)
+Reviewer: no blocking findings (run after the last push)
 Not verified: CI has not finished.
 Needs you: merge in the GitHub UI.
+Next: the main session runs the `reviewer` agent before telling the owner the PR is ready.
 ```

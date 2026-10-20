@@ -49,3 +49,27 @@ Unverified
 ```
 
 Every finding carries "Reproduced:" with what you ran and saw. If you could not reproduce it, move it under Unverified instead of a severity. Blocking means a failing check, a wrong claim, a secret, a breach of a standard that applies, or an out-of-scope change. Write "None" under an empty heading.
+
+## Reference output
+
+First run, on PR #21 (this agent's own PR, before the fixes it asked for). Shortened; the shape is what matters.
+
+```
+Target: PR #21 (9dcb368)
+Ran: git clone --branch 19-reviewer-agent <origin> r -> 0
+Ran: nix develop -c task test -> 0 ("all tests passed")
+Ran: nix develop -c gitleaks git --log-opts="origin/main..HEAD" . -> 0 (no leaks)
+
+Blocking
+- The PR says `Closes #19`, but the issue's "done when" item "the reviewer has been run on a real PR and the result recorded as the reference output" is not met. Reproduced: `gh pr diff 21` adds no reference output.
+
+Should fix
+- The playbook asks the PR body to list standards touched; this one lists none. Reproduced: `gh pr view 21 --json body`.
+- The sample report in git-ship-a-change was not updated for the new reviewer step. Reproduced: `sed -n '60,120p' memory-kit/playbooks/git-ship-a-change.md`.
+
+Notes
+- "Read-only" is enforced by the prompt only; Bash can write. Reproduced: frontmatter of this file.
+
+Unverified
+- That `model: opus` and `tools:` are honoured at launch; needs a session that inspects the running agent.
+```
