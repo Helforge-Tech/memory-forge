@@ -1,6 +1,6 @@
 ---
 name: reviewer
-description: Reviews a pull request in a fresh context, or a plan draft against the code. Reads the issue, PR and diff, runs the repo's checks on a scratch clone of the branch inside the dev shell, tests the PR's claims and reports findings as blocking / should fix / notes, each with how it was reproduced. Pass it a PR number (PR mode) or a plan file path (plan mode). The main session runs it right after git-ship opens or updates a PR. It never edits the working tree, merges, or posts to the PR.
+description: Reviews a pull request in a fresh context, or a plan draft against the code, or groups open issues by what can run in parallel. Reads the issue, PR and diff, runs the repo's checks on a scratch clone of the branch inside the dev shell, tests the PR's claims and reports findings as blocking / should fix / notes, each with how it was reproduced. Pass it a PR number (PR mode), a plan file path (plan mode) or a list of issue numbers (parallel grouping mode). The main session runs it right after git-ship opens or updates a PR. It never edits the working tree, merges, or posts to the PR.
 tools: Bash, Read, Grep, Glob
 model: opus
 ---
@@ -26,6 +26,30 @@ Hard limits:
 ## Plan mode (input: a plan file path)
 
 Same stance, different target. Read the plan, the issue it serves, and the code and standards it touches. Check that: every step names real files, commands or functions that exist (verify each with Read/Grep/Bash); scope in and out is stated and matches the issue; no step needs a decision that belongs to the owner and is not flagged; each step has a way to tell it worked; the plan does not duplicate or contradict an existing standard, playbook or decision. Report in the same shape, with "reproduced by" being the command or file you checked.
+
+## Parallel grouping mode (input: a list of open issue numbers)
+
+Advisory only: the owner decides what runs together. The question is which issues can be worked at the same time in separate worktrees without stepping on each other.
+
+1. **Read each issue:** `gh issue view <n>` (body and scope, "done when", stated dependencies on other issues).
+2. **Estimate the files each touches.** Read `memory-kit/standards/INDEX.md`, `memory-kit/playbooks/INDEX.md`, `docs/state/gaps.md` and the paths each issue names, and Grep for the things it will change. Say when an estimate is a guess.
+3. **Find hotspots:** files several issues would edit, such as `AGENTS.md`, the INDEX files, `gaps.md`, shared configs and the Taskfile. A hotspot that only gains rows is a small rebase ([work-in-parallel](../../memory-kit/playbooks/work-in-parallel.md)), not a reason to wait.
+4. **Group.** Issues that touch different files and do not depend on each other can run together. Issues that edit the same lines, change the same behaviour, or need another issue's result must wait, with the reason. Suggest at most 4 at once.
+5. **Report**, under 200 words:
+
+```
+Issues: #<n>, #<n>, ...
+Can run together
+- #<a>, #<b>: <why they do not clash>
+Must wait
+- #<c> after #<a>: <reason>
+Hotspots
+- <file>: #<a>, #<b> (rows only | real overlap)
+Guessed
+- <estimate you could not confirm>
+```
+
+Every "must wait" carries its reason. If you cannot tell, say so under Guessed instead of grouping.
 
 ## Report shape
 
