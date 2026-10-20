@@ -18,8 +18,8 @@ check: .githooks/pre-commit and .githooks/pre-push block main; reviewer for bran
    - **No slashes.** Slashes (`feat/`, `user/`) confuse branch-matching automation.
    - The number is the issue this branch actually completes, **never a parent or epic** that tracks other work.
    - If the work has no issue, create one first ([git-issues.md](git-issues.md)).
-3. **One branch per unit of work**, cut from the latest `main`. Never branch off another feature branch unless it is a deliberate stacked PR, and the PR says so.
-4. **One topic per PR.** The PR title is a conventional commit subject ([git-commits.md](git-commits.md)). The body has **What**, **Why**, **How** (if there are tradeoffs) and **Testing**, and says plainly what was not verified.
+3. **One branch per unit of work**, cut from the latest `main`. Never branch off another feature branch unless it is a deliberate stacked PR, and the PR says so. A change that touches both code and memory is such a stack ([git-split-code-and-memory](git-split-code-and-memory.md)).
+4. **One topic per PR, and one kind: code or memory, not both** ([git-split-code-and-memory](git-split-code-and-memory.md)). The PR title is a conventional commit subject ([git-commits.md](git-commits.md)). The body has **What**, **Why**, **How** (if there are tradeoffs) and **Testing**, and says plainly what was not verified.
 5. **Link the issue in the PR body, not in commits:** `Closes #13` on its own line. Use `Refs #N` to link without closing. One `Closes` line per issue the PR resolves.
 6. **Default to one issue per PR.** When several issues are in play, help the owner decide whether to bundle or split; do not silently do either.
    - Bundle when the changes are inseparable, or tiny and clearer together (a fix and its test).
