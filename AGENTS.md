@@ -27,7 +27,7 @@ Run inside the nix dev shell (direnv, or `nix develop`). Entering the shell enab
 
 ## Resuming
 
-New session, or lost? Type `/pickup` to list the open threads and get a recommendation, or `/pickup <issue#>` to resume one thread: its issue, its handoff (`docs/state/handoffs/<issue#>-<topic>.md`), its branch and its PR. It does no work until asked. If a session ended without a handoff, start from `git log`, and make `/handoff` a habit.
+New session, or lost? Type `/pickup` to list the open threads and get a recommendation, or `/pickup <issue#>` to resume one thread: its issue, its handoff (`docs/state/handoffs/<issue#>-<topic>.md`), its branch and its PR. It does no work until asked, except cleaning up worktrees whose PR is merged. If a session ended without a handoff, start from `git log`, and make `/handoff` a habit.
 
 ## Working with the owner
 
