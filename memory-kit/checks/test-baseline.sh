@@ -115,6 +115,15 @@ expect "  and run now passes" 0 run "r1~apps/a" "r2~apps/b"
 expect "regenerate refuses to overwrite" 2 regen "r1~apps/a"
 FORCE=--force expect "regenerate --force overwrites" 0 regen "r1~apps/a"
 expect "regenerate rejects malformed input" 2 regen "r1"
+put checks/exceptions/demo "r9~apps/z~# permanent"
+rm "$work/checks/baselines/demo"
+expect "regenerate leaves out exceptions" 0 regen "r1~apps/a" "r9~apps/z"
+contains "  says how many were left out" "1 left out"
+expect "  baseline has only the other entry" 0 test "$(cat "$work/checks/baselines/demo")" = "$(printf 'r1\tapps/a')"
+expect "  and run passes" 0 run "r1~apps/a" "r9~apps/z"
+put checks/exceptions/demo "r9~apps/z"
+FORCE=--force expect "regenerate rejects a malformed exceptions file" 2 regen "r1~apps/a"
+rm "$work/checks/exceptions/demo"
 expect "unknown mode" 2 "$here/baseline.sh" bogus demo
 expect "missing check name" 2 "$here/baseline.sh" run
 expect "check name with a slash" 2 "$here/baseline.sh" run a/b
@@ -132,7 +141,11 @@ expect "no marker: every folder matches" 0 test "$("$here/kinds.sh" list service
 expect "a glob with a space" 0 test "$("$here/kinds.sh" list spaced)" = "apps/my app"
 mkdir "$work/services/z"
 expect "a new folder is picked up" 0 test "$("$here/kinds.sh" list service | wc -l | tr -d ' ')" = 3
-expect "a kind that matches nothing prints nothing" 0 test -z "$(printf 'empty\tnope/*\n' >> "$work/checks/kinds"; "$here/kinds.sh" list empty)"
+printf 'empty\tnope/*\n' >> "$work/checks/kinds"
+expect "a kind with no instances is an error" 2 "$here/kinds.sh" list empty
+contains "  says so" "has no instances"
+printf 'lost\tapps/* src-tauri\n' >> "$work/checks/kinds"
+expect "a lost tab between glob and marker is an error" 2 "$here/kinds.sh" list lost
 expect "unknown kind" 2 "$here/kinds.sh" list nope
 for bad in "broken" "kind  apps/*" "kind${T}${T}x" "kind${T}a${T}b${T}c" "${T}apps/*"; do
   printf '%s\n' "$bad" > "$work/checks/kinds"

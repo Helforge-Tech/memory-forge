@@ -14,8 +14,8 @@
 # <repo>/checks/exceptions/<check-name> (a violation's fields plus a final `# reason`
 # field; the reason is required). Any malformed line in any of these exits 2 and names
 # the file and line. `run` exits 1 on a violation that is in neither file, or on a
-# baseline entry that no longer occurs. `regenerate` writes the baseline from stdin and
-# refuses if one exists, unless --force. The repo root is $CHECKS_REPO_ROOT, else the
+# baseline entry that no longer occurs. `regenerate` writes the baseline from stdin, without
+# the entries listed in the exceptions file, and refuses if one exists, unless --force. The repo root is $CHECKS_REPO_ROOT, else the
 # git top level.
 set -euo pipefail
 export LC_ALL=C
@@ -60,27 +60,31 @@ validate() {
 validate "violations" violation > "$tmp/current.raw" || exit 2
 sort -u "$tmp/current.raw" > "$tmp/current"
 
+# Permanent exceptions are read first: regenerate leaves them out of the baseline.
+: > "$tmp/exceptions"
+if [ -f "$exceptions" ]; then
+  validate "${exceptions#"$root"/}" exception < "$exceptions" > "$tmp/exceptions.raw" || exit 2
+  # the id of an exception is its line without the final reason field
+  sed 's/	[^	]*$//' "$tmp/exceptions.raw" | sort -u > "$tmp/exceptions"
+fi
+
 if [ "$mode" = regenerate ]; then
   if [ -e "$baseline" ] && [ "$force" = 0 ]; then
     die "${baseline#"$root"/} exists; regenerate is for introducing a check (use --force to overwrite)"
   fi
   mkdir -p "$(dirname "$baseline")"
-  cp "$tmp/current" "$baseline"
-  echo "baseline: wrote $(wc -l < "$baseline" | tr -d ' ') entries to ${baseline#"$root"/}"
+  comm -23 "$tmp/current" "$tmp/exceptions" > "$baseline"
+  echo "baseline: wrote $(wc -l < "$baseline" | tr -d ' ') entries to ${baseline#"$root"/}" \
+    "($(comm -12 "$tmp/current" "$tmp/exceptions" | wc -l | tr -d ' ') left out as permanent exceptions)"
   exit 0
 fi
 
-: > "$tmp/baseline"; : > "$tmp/exceptions"
+: > "$tmp/baseline"
 if [ -f "$baseline" ]; then
   validate "${baseline#"$root"/}" violation < "$baseline" > "$tmp/baseline.raw" || exit 2
   sort -u "$tmp/baseline.raw" > "$tmp/baseline"
   cmp -s "$tmp/baseline.raw" "$tmp/baseline" \
     || die "${baseline#"$root"/} is not sorted and unique (LC_ALL=C sort -u)"
-fi
-if [ -f "$exceptions" ]; then
-  validate "${exceptions#"$root"/}" exception < "$exceptions" > "$tmp/exceptions.raw" || exit 2
-  # the id of an exception is its line without the final reason field
-  sed 's/	[^	]*$//' "$tmp/exceptions.raw" | sort -u > "$tmp/exceptions"
 fi
 
 comm -23 "$tmp/current" "$tmp/exceptions" > "$tmp/live"       # not a permanent exception
