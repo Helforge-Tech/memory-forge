@@ -8,12 +8,12 @@ Get oriented. Read only what is listed below; do not explore the repo. Handoffs 
 
 ## Always
 
-0. `git fetch --prune origin` first. It updates `origin/*` only: local `main` may still be behind, so compare against `origin/main`, never local `main`. If the fetch fails (offline), say so at the top of the reply and mark every branch and PR state as possibly stale.
+0. `git fetch --prune origin` first. It updates `origin/*` only: local `main` may still be behind, so use `origin/main`, never local `main`, for commit history. Whether a PR is merged comes from `gh` (below). If the fetch fails (offline), say so at the top of the reply and mark every branch and PR state as possibly stale.
 1. `AGENTS.md` is already loaded.
 2. `docs/state/gaps.md`.
 3. If `docs/planning/PLAN.md` exists: its Status header (top ~12 lines) and its "Open questions" section. Nothing else in that file.
 4. `git status --short`, `git branch --show-current` and `git log --oneline -8`.
-5. The current branch's PR, if it is not `main`: `gh pr list --state all --head "$(git branch --show-current)" --json number,state`. If any PR is `MERGED`, the report says so in one line ("on `<branch>`, merged in #N; run `git switch main && git pull --ff-only`") and treats nothing on that branch as pending. If there are several PRs, go by the newest; if there is none (`[]`), the branch's work is unshipped.
+5. The current branch's PR, if it is not `main`: `gh pr list --state all --head "$(git branch --show-current)" --json number,state`. Go by the newest PR. If it is `MERGED`, the report says so in one line ("on `<branch>`, merged in #N; run `git switch main && git pull --ff-only`") and treats nothing on that branch as pending. If there is none (`[]`), the branch's work is unshipped.
 
 ## With an issue number (`/pickup <n>`)
 
