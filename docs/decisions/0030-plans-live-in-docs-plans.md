@@ -1,4 +1,4 @@
-# 0028: Plans for larger work live in `docs/plans/`, one set of files per issue
+# 0030: Plans for larger work live in `docs/plans/`, one set of files per issue
 
 - Status: accepted
 - Date: 2026-10-20

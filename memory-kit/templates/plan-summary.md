@@ -21,8 +21,16 @@ What is true when all phases are done.
 ## Approach
 Recommendation, options, strongest objection. Link decision records.
 
+## Findings
+What the code shows. Each claim names the file or command that proves it, or is marked `(unverified)`.
+
 ## Blast radius
 What was searched and what depends on the change.
+
+## Problems triaged
+| Problem | Real? (proof) | Matters? (who, how often) | Decision |
+|---|---|---|---|
+| | | | plan / drop |
 
 ## Phases
 | # | Phase | Depends on | Status | Detail |
