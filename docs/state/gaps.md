@@ -4,7 +4,9 @@ Kinds of things with no standard yet, and tasks with no playbook. A session that
 
 | Gap | Found in | Status |
 |---|---|---|
-| No playbook yet for CI, or for any app type other than desktop; no standard for IaC, services or web | template | open |
+| No playbook yet for setting up CI (the PR gate has a standard, `ci-pr-gate`), or for any app type other than desktop; no standard for IaC, services or web | template | open |
+| Branch protection is not enabled on `main`, so the `gate` job of `ci-pr-gate` cannot yet be required here. The plan (Free, public repo) allows it; turning it on is a repo setting that waits for the owner | #16 | open |
+| This repo has no `.github/workflows/` and no `task secrets`, so `ci-pr-gate` is not applied here yet | #16 | open |
 | How notes link to each other: `[[wikilinks]]` vs relative markdown links | opening the repo in Obsidian | open |
 | Checks for branch names and commit scopes (hooks block `main` and check commit type and format) | memory standards (0007) | partly done |
 | How to use the Project board: columns, fields, when an issue moves | planning backlog (0009) | open |
