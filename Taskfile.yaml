@@ -13,3 +13,8 @@ tasks:
     silent: true
     cmds:
       - task --list
+
+  test:
+    desc: Test the kit's check scripts (baseline runner and kinds map)
+    cmds:
+      - memory-kit/checks/test-baseline.sh

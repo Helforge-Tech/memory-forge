@@ -14,7 +14,7 @@ A template for a repeatable way to build things (apps, sites, services, docs, Ia
 
 Run inside the nix dev shell (direnv, or `nix develop`). Entering the shell enables the secret-scan hook. The shell carries only what the process needs (`task`, `gh`, `gitleaks`); a project adds its own tools and commands. `task --list` shows them all. Don't invent commands; if one is missing, propose it. Setting a project up is a playbook, not a command.
 
-This repo has no commands of its own yet beyond `task --list`.
+`task test` tests the kit's check scripts (`memory-kit/checks/test-baseline.sh`). There is no other command yet.
 
 ## How a session works
 
