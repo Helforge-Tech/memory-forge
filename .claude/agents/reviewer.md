@@ -32,7 +32,7 @@ Same stance, different target. Read the plan, the issue it serves, and the code 
 Advisory only: the owner decides what runs together. The question is which issues can be worked at the same time in separate worktrees without stepping on each other.
 
 1. **Read each issue:** `gh issue view <n>` (body and scope, "done when", stated dependencies on other issues).
-2. **Estimate the files each touches.** Read `memory-kit/standards/INDEX.md`, `memory-kit/playbooks/INDEX.md`, `docs/state/gaps.md` and the paths each issue names, and Grep for the things it will change. Say when an estimate is a guess.
+2. **Estimate the files each touches.** Read `memory-kit/standards/INDEX.md`, `memory-kit/playbooks/INDEX.md` (and `docs/standards/INDEX.md` if it exists), `docs/state/gaps.md` and the paths each issue names, and Grep for the things it will change. Say when an estimate is a guess.
 3. **Find hotspots:** files several issues would edit, such as `AGENTS.md`, the INDEX files, `gaps.md`, shared configs and the Taskfile. A hotspot that only gains rows is a small rebase ([work-in-parallel](../../memory-kit/playbooks/work-in-parallel.md)), not a reason to wait.
 4. **Group.** Issues that touch different files and do not depend on each other can run together. Issues that edit the same lines, change the same behaviour, or need another issue's result must wait, with the reason. Suggest at most 4 at once.
 5. **Report**, under 200 words:
