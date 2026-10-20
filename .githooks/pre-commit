@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Blocks commits on main, and commits that contain secrets. Enable once per clone:
+#   git config core.hooksPath .githooks
+set -euo pipefail
+
+if [ "$(git branch --show-current)" = "main" ]; then
+  echo "pre-commit: committing on main is not allowed. Create a branch: git switch -c <issue#>-<short-summary>" >&2
+  exit 1
+fi
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-commit: gitleaks is missing, so I won't commit without a secret scan. Add it to flake.nix (see docs/decisions/0008)." >&2
+  exit 1
+fi
+exec gitleaks git --staged --redact --no-banner

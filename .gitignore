@@ -1,0 +1,34 @@
+.DS_Store
+node_modules/
+target/
+dist/
+*.log
+*.tsbuildinfo
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# direnv: .envrc is tracked (just `use flake`); personal additions go in .envrc.local
+.envrc.local
+.direnv/
+
+# go-task checksums for tasks with sources/generates
+.task/
+
+# Unreviewed memory candidates stay out of git until a human promotes them
+docs/state/inbox/
+
+# Handoffs are per-person and local. Rows to promote go into tracked files in the weekly PR
+docs/state/handoffs/*
+!docs/state/handoffs/.gitkeep
+
+# Obsidian per-machine state (vault settings that are shared stay tracked)
+.obsidian/workspace*.json
+.obsidian/cache
+.obsidian/plugins/
+
+# Claude Code local state
+.claude/settings.local.json
+.claude/worktrees/
