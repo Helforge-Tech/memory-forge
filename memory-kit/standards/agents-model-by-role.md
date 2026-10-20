@@ -3,7 +3,7 @@ title: Cheap models do research; heavy models give guidance
 kind: agents
 scope: portable
 status: active
-updated: 2026-10-15
+updated: 2026-10-20
 decision: ../../docs/decisions/0017-model-by-role.md
 check: none yet
 ---
