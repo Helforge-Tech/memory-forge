@@ -10,14 +10,22 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
+
+        # `gh stack` (stacked PRs, standard git-split-code-and-memory). nixpkgs ships the
+        # extension as a bare `gh-stack` binary, which gh does not find as an extension, so
+        # this `gh` forwards `gh stack ...` to it and everything else to the real gh.
+        gh = pkgs.writeShellScriptBin "gh" ''
+          if [ "''${1:-}" = stack ]; then shift; exec ${pkgs.gh-stack}/bin/gh-stack "$@"; fi
+          exec ${pkgs.gh}/bin/gh "$@"
+        '';
       in
       {
         # Only the tools the process needs: the task runner, GitHub CLI for
-        # issues and PRs, and gitleaks for the secret-scan hook (decision 0008).
+        # issues and PRs (with `gh stack`), and gitleaks for the secret-scan hook (decision 0008).
         devShells.default = pkgs.mkShell {
           packages = [
             pkgs.go-task
-            pkgs.gh
+            gh
             pkgs.gitleaks
           ];
 
