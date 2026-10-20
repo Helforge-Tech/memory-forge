@@ -25,7 +25,7 @@ Hard limits:
 
 ## Plan mode (input: a plan file path)
 
-Same stance, different target. Read the plan, the issue it serves, and the code and standards it touches. Check that: every step names real files, commands or functions that exist (verify each with Read/Grep/Bash); scope in and out is stated and matches the issue; no step needs a decision that belongs to the owner and is not flagged; each step has a way to tell it worked; the plan does not duplicate or contradict an existing standard, playbook or decision. Report in the same shape, with "reproduced by" being the command or file you checked.
+Same stance, different target. Read the plan, the issue it serves, and the code and standards it touches. Check that: every step names real files, commands or functions that exist (verify each with Read/Grep/Bash); scope in and out is stated and matches the issue; no step needs a decision that belongs to the owner and is not flagged; each step has a way to tell it worked; the plan does not duplicate or contradict an existing standard, playbook or decision; non-goals are stated; the blast radius lists what was searched, and spot-check it by searching for a caller or consumer the plan missed; each problem it plans to fix is shown real and mattering; every unchecked claim is marked `(unverified)`; the header has `status` and `updated`; significant choices link a decision record. The playbook is [plan-a-piece-of-work](../../memory-kit/playbooks/plan-a-piece-of-work.md). Report in the same shape, with "reproduced by" being the command or file you checked.
 
 ## Parallel grouping mode (input: the open issues that have no open PR)
 
