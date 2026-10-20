@@ -18,7 +18,8 @@ check: memory-kit/checks/test-memory-check.sh, run by task test; task memory run
    - `repo-map-unlisted`: every tracked top-level folder (not starting with `.`) is in the repo map.
    - `ref-missing`: every markdown link in `AGENTS.md`, `CLAUDE.md`, the kit README, skills, playbooks and standards points at a path that exists. Links in code blocks (fenced with three backticks or `~~~`, indented or not) and in inline code are examples and are skipped. Not checked: reference-style links (`[x]: path`) and paths that contain parentheses.
    - `ref-archived`: no such link points into a folder that holds an `ARCHIVED.md`.
-   - `command-missing`: every `` `task <name>` `` in `AGENTS.md` is a task in `Taskfile.yaml`.
+   - `command-missing`: every `` `task <name>` `` in `AGENTS.md` is a task the task runner lists (`task --list-all`, so includes and namespaced tasks count; without `task`, the first `Taskfile.yml` or `Taskfile.yaml` is parsed).
+   - `decision-number-duplicate`: no two decisions share a number.
    - `root-size`: `AGENTS.md` stays under 16000 bytes (`MEMORY_ROOT_BUDGET` sets another budget).
    - `index-status` and `index-row-missing`: each kit standard and playbook has a row in its `INDEX.md`, and the row's status matches the item's `status:`.
    - `kinds-map-invalid`: `checks/kinds`, if present, parses and every kind has an instance.
