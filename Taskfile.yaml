@@ -15,13 +15,20 @@ tasks:
       - task --list
 
   test:
-    desc: Test the kit's check scripts (baseline runner, kinds map, memory checks)
+    desc: Test the kit's check scripts (baseline runner, kinds map, memory checks, PR split check)
     cmds:
       - memory-kit/checks/test-baseline.sh
       - memory-kit/checks/test-memory-check.sh
+      - memory-kit/checks/test-pr-split.sh
 
   memory:
     desc: Check the repo's memory for drift (repo map, links, commands, size, indexes, decisions)
     set: [pipefail]
     cmds:
       - memory-kit/checks/memory-check.sh | memory-kit/checks/baseline.sh run memory
+
+  split:
+    desc: Fail a change that mixes code paths and memory paths (base is GATE_BASE, default origin/main)
+    set: [pipefail]
+    cmds:
+      - memory-kit/checks/pr-split.sh | memory-kit/checks/baseline.sh run split

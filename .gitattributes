@@ -1,0 +1,10 @@
+# Memory paths are collapsed in GitHub diffs, a backup for a PR that was not split into
+# code and memory (standard git-split-code-and-memory). Keep this list the same as the
+# memory paths in checks/split, or the template defaults when that file is absent.
+memory-kit/** linguist-generated=true
+docs/** linguist-generated=true
+knowledge/** linguist-generated=true
+.claude/** linguist-generated=true
+AGENTS.md linguist-generated=true
+CLAUDE.md linguist-generated=true
+README.md linguist-generated=true
