@@ -3,7 +3,7 @@ title: Branches and pull requests
 kind: git
 scope: portable
 status: active
-updated: 2026-10-15
+updated: 2026-10-20
 decision: ../../docs/decisions/0007-git-workflow-issue-branches-conventional-commits.md
 check: .githooks/pre-commit and .githooks/pre-push block main; reviewer for branch names and PR bodies
 ---
@@ -31,9 +31,10 @@ check: .githooks/pre-commit and .githooks/pre-push block main; reviewer for bran
 10. **Ask before** deleting a branch, closing a PR or issue, or changing repo settings.
 11. **Delete the branch after merge.**
 12. **One checkout per concurrent thread.** When more than one agent or session works at the same time, each gets its own git worktree and branch; never two threads in one folder.
-    - Add: `git worktree add ../<repo>-<issue#> -b <issue#>-<short-kebab-summary> origin/main`
-    - Remove after the PR is merged: `git worktree remove ../<repo>-<issue#>`
+    - Add: `git worktree add .claude/worktrees/<issue#>-<short-kebab-summary> -b <issue#>-<short-kebab-summary> origin/main`
+    - Remove after the PR is merged: `git worktree remove .claude/worktrees/<issue#>-<short-kebab-summary>`
     - Git hooks and config are shared by every worktree. Ignored files (such as local handoffs) are not: they exist only in the worktree that wrote them. Copy any local handoff to the main checkout before removing the worktree.
+    - The full procedure is [work-in-parallel](../playbooks/work-in-parallel.md).
 
 ## Why
 
