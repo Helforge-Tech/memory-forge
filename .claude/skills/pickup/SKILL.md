@@ -8,12 +8,12 @@ Get oriented. Read only what is listed below; do not explore the repo. Handoffs 
 
 ## Always
 
-0. `git fetch --prune origin` first, so `main` and the other branches match the remote. Every git state below is read after this.
+0. `git fetch --prune origin` first. It updates `origin/*` only: local `main` may still be behind, so compare against `origin/main`, never local `main`. If the fetch fails (offline), say so at the top of the reply and mark every branch and PR state as possibly stale.
 1. `AGENTS.md` is already loaded.
 2. `docs/state/gaps.md`.
 3. If `docs/planning/PLAN.md` exists: its Status header (top ~12 lines) and its "Open questions" section. Nothing else in that file.
 4. `git status --short`, `git branch --show-current` and `git log --oneline -8`.
-5. The current branch's PR, if it is not `main`: `gh pr list --state all --head "$(git branch --show-current)" --json number,state`. If it is `MERGED`, the report says so in one line ("on `<branch>`, merged in #N; switch to `main`") and treats nothing on that branch as pending.
+5. The current branch's PR, if it is not `main`: `gh pr list --state all --head "$(git branch --show-current)" --json number,state`. If any PR is `MERGED`, the report says so in one line ("on `<branch>`, merged in #N; run `git switch main && git pull --ff-only`") and treats nothing on that branch as pending. If there are several PRs, go by the newest; if there is none (`[]`), the branch's work is unshipped.
 
 ## With an issue number (`/pickup <n>`)
 
@@ -30,7 +30,7 @@ Get oriented. Read only what is listed below; do not explore the repo. Handoffs 
 
 ## Branch and PR state come from `gh`
 
-Whether a PR or branch is merged, open or closed is read with `gh` (`gh pr view N --json state`, `gh pr list --head <branch>`), never inferred by comparing local branches or reading `git log` against a local `main`. When the owner says something is merged or done, check it once with `gh` and go with the result; do not repeat the old state.
+Whether a PR or branch is merged, open or closed is read with `gh` (`gh pr view N --json state`, `gh pr list --state all --head <branch>`; without `--state all`, a merged PR lists as nothing), never inferred by comparing local branches or reading `git log` against a local `main`. When the owner says something is merged or done, check it once with `gh` and go with the result; do not repeat the old state.
 
 ## Verify before reporting
 
