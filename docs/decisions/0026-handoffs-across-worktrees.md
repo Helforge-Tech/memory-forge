@@ -1,6 +1,6 @@
 # 0026: Handoffs stay in the repo and are read across worktrees
 
-- Status: proposed
+- Status: accepted
 - Date: 2026-10-20
 - Scope: `/handoff`, `/pickup` and `docs/state/handoffs/` when work runs in several worktrees
 

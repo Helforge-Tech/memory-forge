@@ -1,6 +1,6 @@
 ---
 title: Work an issue in parallel in its own worktree
-status: proposed
+status: active
 updated: 2026-10-20
 ---
 
