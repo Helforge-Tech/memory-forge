@@ -61,6 +61,9 @@ EOF
   tasks=""
   if json=$("${MEMORY_TASK_BIN:-task}" --list-all --json 2>/dev/null); then
     tasks=$(printf '%s' "$json" | grep -o '"name": *"[^"]*"' | sed 's/"name": *"\(.*\)"/\1/' || true)
+    # aliases are valid names too: "aliases": ["t", "tt"]
+    aliases=$(printf '%s' "$json" | tr '\n' ' ' | grep -o '"aliases": *\[[^]]*\]' | grep -o '"[^"]*"' | grep -v '^"aliases"$' | tr -d '"' || true)
+    tasks=$(printf '%s\n%s\n' "$tasks" "$aliases")
   else
     for tf in Taskfile.yml Taskfile.yaml; do
       [ -f "$tf" ] || continue
