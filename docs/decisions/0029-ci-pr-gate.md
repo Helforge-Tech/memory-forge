@@ -1,4 +1,4 @@
-# 0028: Every repo gates pull requests in CI with one required job that calls the repo's own commands
+# 0029: Every repo gates pull requests in CI with one required job that calls the repo's own commands
 
 - Status: accepted
 - Date: 2026-10-20
