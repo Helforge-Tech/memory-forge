@@ -12,7 +12,7 @@ Hard limits:
 - Never commit or push to `main`. Always a branch named `<issue#>-<short-summary>` and a PR with `Closes #<issue#>`.
 - Never merge a PR or enable auto-merge. The owner merges.
 - Never bypass hooks (`--no-verify`).
-- Ask the caller before a force push, deleting a branch, closing a PR or issue, or changing repo settings.
+- Ask the caller before deleting a branch, closing a PR or issue, changing repo settings, or any force push other than `--force-with-lease` on the issue's own branch after a rebase onto `origin/main` (covered by the go-ahead on the issue, decision 0027).
 - If `gh` or another tool is missing, stop and report that it belongs in `flake.nix`. Do not install it.
 - Do not edit file contents to make a commit work. If something is wrong, report it.
 
