@@ -9,7 +9,7 @@ Write the session handoff. Reconstruct it from this conversation and from `git s
 The handoff is local and untracked (`docs/state/handoffs/` is gitignored; decision 0014). Do not edit any tracked file here. The owner promotes the gap rows in a weekly PR.
 
 1. Find the session's issue. Work always has one (`git-issues`). If it has none, create it first with `gh issue create`. If the session worked on several, write one handoff per issue.
-2. Create `docs/state/handoffs/<issue#>-<short-topic>.md` (decision 0015). If a handoff for that issue exists, write the new one with a different topic. Start it with a header, then these sections, each short:
+2. Create `docs/state/handoffs/<issue#>-<short-topic>.md` (decision 0015). In a worktree, this is the worktree's own `docs/state/handoffs/`; `/pickup` reads every worktree (decision 0026). If a handoff for that issue exists, write the new one with a different topic. Start it with a header, then these sections, each short:
    - **Header:** `Issue: #<n>`, `Branch: <name or none>`, `PR: #<n> or none`, `Date: <YYYY-MM-DD>`.
    - **Done:** what changed, with paths.
    - **Decided:** decisions made. Link the records in `docs/decisions/`.
