@@ -10,11 +10,13 @@
 #   ref-missing          a markdown link in root guidance, a skill, a playbook or a standard
 #                        points at a path that does not exist (key: the link)
 #   ref-archived         such a link points into a folder that holds ARCHIVED.md
-#   command-missing      AGENTS.md names `task <name>` and Taskfile.yaml has no such task
+#   command-missing      AGENTS.md names `task <name>` and Taskfile.yaml (or .yml) has no such task
 #   root-size            AGENTS.md is over its budget ($MEMORY_ROOT_BUDGET bytes, default 16000)
 #   index-status         a kit index row's status differs from the item's `status:` (key: the file)
 #   index-row-missing    a kit item has no row in its INDEX.md (key: the file)
 #   kinds-map-invalid    checks/kinds is malformed or has a kind with no instance (key: the kind)
+#   decision-base-missing  no base ref or merge base, and $CI or $MEMORY_REQUIRE_BASE is set
+#                        (otherwise the decisions check is skipped with a note)
 #   decision-edited      a decision differs from the merge base with $MEMORY_CHECK_BASE
 #                        (default origin/main) in any line but `- Status:`; also when deleted
 #
@@ -52,7 +54,11 @@ EOF
 
   # --- commands named in root guidance exist in the task runner ----------------------
   tasks=""
-  [ -f Taskfile.yaml ] && tasks=$(awk '/^tasks:/{on=1;next} /^[^ #]/{on=0} on && /^  [A-Za-z0-9:_-]+:/{ sub(/^  /,""); sub(/:.*/,""); print }' Taskfile.yaml)
+  for tf in Taskfile.yaml Taskfile.yml; do
+    [ -f "$tf" ] || continue
+    tasks=$(awk '/^tasks:/{on=1;next} /^[^ #]/{on=0} on && /^  [A-Za-z0-9:_-]+:/{ sub(/^  /,""); sub(/:.*/,""); print }' "$tf")
+    break
+  done
   names=$(grep -o '`task [a-z][A-Za-z0-9:_-]*`' AGENTS.md | sed 's/`task \(.*\)`/\1/' | sort -u || true)
   while IFS= read -r n; do
     [ -n "$n" ] || continue
@@ -129,15 +135,21 @@ fi
 
 # --- decisions are not edited after merge ---------------------------------------------------
 base=${MEMORY_CHECK_BASE:-origin/main}
+mb=""
 if git rev-parse --verify -q "$base^{commit}" >/dev/null 2>&1; then
-  mb=$(git merge-base HEAD "$base")
+  mb=$(git merge-base HEAD "$base" 2>/dev/null || true)
+fi
+if [ -n "$mb" ]; then
   git ls-tree -r --name-only "$mb" -- docs/decisions | while IFS= read -r f; do
     if [ ! -f "$f" ]; then emit decision-edited "$f" deleted; continue; fi
     if ! diff <(git show "$mb:$f" | grep -v '^- Status:') <(grep -v '^- Status:' "$f") >/dev/null; then
       emit decision-edited "$f"
     fi
   done
+elif [ -n "${CI:-}" ] || [ -n "${MEMORY_REQUIRE_BASE:-}" ]; then
+  # a gate must not pass because it could not look (a shallow clone has no merge base)
+  emit decision-base-missing docs/decisions "$base"
 else
-  echo "memory-check: no '$base'; skipped the decisions check" >&2
+  echo "memory-check: no merge base with '$base'; skipped the decisions check" >&2
 fi
 exit 0
