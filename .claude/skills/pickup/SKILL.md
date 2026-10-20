@@ -19,14 +19,14 @@ Get oriented. Read only what is listed below; do not explore the repo. Handoffs 
 ## With an issue number (`/pickup <n>`)
 
 6. `gh issue view <n>`, the issue and its last few comments.
-7. The newest `docs/state/handoffs/<n>-*.md` by modification time (`ls -t <each worktree>/docs/state/handoffs/<n>-*.md | head -1`). Read all of it.
+7. The newest `docs/state/handoffs/<n>-*.md` by modification time (`find <each worktree>/docs/state/handoffs -maxdepth 1 -name '<n>-*.md' -exec ls -t {} + 2>/dev/null | head -1`; `find` rather than a shell glob, which fails in zsh when one worktree has no match). Read all of it.
 8. The thread's code state: `git branch --list "<n>-*"` and the PRs from that branch (`gh pr list --state all --json number,title,state,headRefName --jq '.[] | select(.headRefName | startswith("<n>-"))'`).
 9. Recommend the next step for that thread only. Mention another issue or PR only if it blocks this one, and only after checking its state with `gh`.
 
 ## With no argument
 
-6. `gh issue list --state open --limit 20` and `gh pr list`.
-7. The open threads: the issue-numbered handoffs, newest first by modification time: `ls -t <each worktree>/docs/state/handoffs | grep -E '^[0-9]+-' | grep -Ev '^[0-9]{4}-[0-9]{2}-[0-9]{2}-'` (the second filter skips old date-named handoffs). For each, read its header lines (issue, branch, PR, date). Read its "Open" section **only if** it is the newest handoff overall, or its issue is still open (`gh issue view <n> --json state --jq .state`). A handoff for a closed issue that is not the newest is a past snapshot: its Open items may have been resolved since, so do not report them. Do not read the rest.
+6. `gh issue list --state open --limit 20 --json number,title,milestone` and `gh pr list`.
+7. The open threads: the issue-numbered handoffs, newest first by modification time: `find <each worktree>/docs/state/handoffs -maxdepth 1 -name '[0-9]*-*.md' -exec ls -t {} + 2>/dev/null | grep -Ev '/[0-9]{4}-[0-9]{2}-[0-9]{2}-'` (full paths, so the order is global and each note shows its worktree; the filter skips old date-named handoffs). For each, read its header lines (issue, branch, PR, date). Read its "Open" section **only if** it is the newest handoff overall, or its issue is still open (`gh issue view <n> --json state --jq .state`). A handoff for a closed issue that is not the newest is a past snapshot: its Open items may have been resolved since, so do not report them. Do not read the rest.
 8. Recommend the earliest open issue in the current milestone, unless an open thread says something is more urgent.
 9. **Parallel grouping.** If at least two open issues are candidates (open, in the current milestone, with no open PR), start the `reviewer` agent in parallel grouping mode: `Agent` with `subagent_type: reviewer` and `model: opus`, prompt `Parallel grouping mode for open issues #a, #b, ...`. It reads the issues and the indexes and returns what can run together, what must wait and why, and the hotspot files. Pass its result on under "Can run in parallel"; it is advice, and the owner opens each session (playbook `work-in-parallel`). Skip this step with one candidate or none, or if the agent cannot be started (say so). Count the candidates from step 6, not from handoffs.
 
