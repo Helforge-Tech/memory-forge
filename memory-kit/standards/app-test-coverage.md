@@ -17,7 +17,7 @@ check: task coverage (run by CI); reviewer for lowered thresholds
 3. **A threshold is never lowered.** It rises as tests are added. Lowering one needs a decision that says why.
 4. **Entry points that only launch or mount the app are excluded by path,** and the exclusion is commented where it is configured. Nothing else is excluded to improve a number.
 5. **New feature code arrives with tests.** The threshold is the floor; reviewers hold the line above it.
-6. **CI runs the coverage command on every push** ([app-commands](app-commands.md)).
+6. **CI runs the coverage command on every pull request and every push to `main`** ([app-commands](app-commands.md), [ci-pr-gate](ci-pr-gate.md)).
 
 ## Why
 
