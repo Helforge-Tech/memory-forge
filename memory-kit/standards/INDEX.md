@@ -18,3 +18,4 @@ What outputs must satisfy. Standards are added the first time a task introduces 
 | app | [An app ships no unused code, dependencies, permissions or template leftovers](app-no-bloat.md) | reviewer | portable | active |
 | app | [A desktop app signs users in through the system browser, keeps tokens out of the webview, and fails closed](app-auth.md) | reviewer | portable | active |
 | standards | [Standards have two tiers; a repo overrides a kit standard only by decision](standards-tiers.md) | reviewer | portable | active |
+| checks | [Checks tolerate existing violations through a baseline and find their targets through a kinds map](checks-baseline-and-kinds.md) | `test-baseline.sh`, in `task test` | portable | active |

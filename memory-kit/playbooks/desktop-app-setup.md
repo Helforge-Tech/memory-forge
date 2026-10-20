@@ -59,10 +59,10 @@ Work on an issue branch and ship with [git-ship-a-change](git-ship-a-change.md).
    - `dev`: `pnpm tauri dev`. `build`: `pnpm tauri build --no-bundle`.
    - `test`: `test:web` (`pnpm test`) then `test:rust` (`cargo test` in the `src-tauri` folder).
    - `coverage`: `pnpm exec vitest run --coverage`, then `cargo llvm-cov --ignore-filename-regex 'main\.rs' --fail-under-lines {{.RUST_MIN_LINES}}` in the `src-tauri` folder.
-   - `lint`: `pnpm check`, `pnpm exec tsc --noEmit`, `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, then `memory-kit/checks/app-conformance.sh <app> <app>/.conformance-baseline`.
+   - `lint`: `pnpm check`, `pnpm exec tsc --noEmit`, `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, then `memory-kit/checks/app-conformance.sh`.
    - `fmt`: `pnpm exec biome check --write .` and `cargo fmt`.
    - `budget`: `budget:web` (a Vite build, then `size-budget.sh` on `dist`) and `budget:binary` (`task build`, then `size-budget.sh` on the release binary).
-   - Add `.task/` (go-task's cache) to the root `.gitignore`. In `AGENTS.md`, list the commands (replacing any "none yet" line) and update the app's row in the repo map. Do not create `.conformance-baseline`: a new app has no violations to tolerate.
+   - Add `.task/` (go-task's cache) to the root `.gitignore`. In `AGENTS.md`, list the commands (replacing any "none yet" line) and update the app's row in the repo map. Add the app to `checks/kinds` (`desktop-app  <app>  src-tauri`, or confirm an existing glob matches it); the conformance check finds its apps there. Do not create a baseline: a new app has no violations to tolerate.
 8. **Run every check, then run the app.**
    - `task lint`, `task test`, `task coverage`, `task budget` and `task build` pass. The build and the binary budget are run here and not in CI.
    - `task dev` opens a window that shows the version. The window is the one check an agent cannot see; ask the owner to confirm it, once, and say that is what is being asked.
