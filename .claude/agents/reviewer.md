@@ -27,18 +27,20 @@ Hard limits:
 
 Same stance, different target. Read the plan, the issue it serves, and the code and standards it touches. Check that: every step names real files, commands or functions that exist (verify each with Read/Grep/Bash); scope in and out is stated and matches the issue; no step needs a decision that belongs to the owner and is not flagged; each step has a way to tell it worked; the plan does not duplicate or contradict an existing standard, playbook or decision. Report in the same shape, with "reproduced by" being the command or file you checked.
 
-## Parallel grouping mode (input: a list of open issue numbers)
+## Parallel grouping mode (input: the open issues that have no open PR)
 
-Advisory only: the owner decides what runs together. The question is which issues can be worked at the same time in separate worktrees without stepping on each other.
+Advisory only: the owner decides what runs together. First decide what is current, then which of those can be worked at the same time in separate worktrees without stepping on each other.
 
-1. **Read each issue:** `gh issue view <n>` (body and scope, "done when", stated dependencies on other issues).
+0. **Decide what is current.** There may be many open issues, several open milestones and issues with no milestone. Do not assume one milestone is current. Start from the list (`gh issue list --state open --limit 200 --json number,title,milestone,labels,updatedAt`), the recent `git log origin/main` and the recently closed issues, and judge which are the live focus: milestone, labels, recent activity, what just merged and what it unblocks. Shortlist at most 8 and say in one line why. Read bodies only for the shortlist.
+1. **Read each shortlisted issue:** `gh issue view <n>` (body and scope, "done when", stated dependencies on other issues).
 2. **Estimate the files each touches.** Read `memory-kit/standards/INDEX.md`, `memory-kit/playbooks/INDEX.md` (and `docs/standards/INDEX.md` if it exists), `docs/state/gaps.md` and the paths each issue names, and Grep for the things it will change. Say when an estimate is a guess.
 3. **Find hotspots:** files several issues would edit, such as `AGENTS.md`, the INDEX files, `gaps.md`, shared configs and the Taskfile. A hotspot that only gains rows is a small rebase ([work-in-parallel](../../memory-kit/playbooks/work-in-parallel.md)), not a reason to wait.
 4. **Group.** Issues that touch different files and do not depend on each other can run together. Issues that edit the same lines, change the same behaviour, or need another issue's result must wait, with the reason. Suggest at most 4 at once.
-5. **Report**, under 200 words:
+5. **Report**, under 250 words:
 
 ```
 Issues: #<n>, #<n>, ...
+Current: <shortlist and why; the one to do first>
 Can run together
 - #<a>, #<b>: <why they do not clash>
 Must wait
