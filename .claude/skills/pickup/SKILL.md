@@ -8,23 +8,29 @@ Get oriented. Read only what is listed below; do not explore the repo. Handoffs 
 
 ## Always
 
+0. `git fetch --prune origin` first, so `main` and the other branches match the remote. Every git state below is read after this.
 1. `AGENTS.md` is already loaded.
 2. `docs/state/gaps.md`.
 3. If `docs/planning/PLAN.md` exists: its Status header (top ~12 lines) and its "Open questions" section. Nothing else in that file.
 4. `git status --short`, `git branch --show-current` and `git log --oneline -8`.
+5. The current branch's PR, if it is not `main`: `gh pr list --state all --head "$(git branch --show-current)" --json number,state`. If it is `MERGED`, the report says so in one line ("on `<branch>`, merged in #N; switch to `main`") and treats nothing on that branch as pending.
 
 ## With an issue number (`/pickup <n>`)
 
 6. `gh issue view <n>`, the issue and its last few comments.
 7. The newest `docs/state/handoffs/<n>-*.md` by modification time (`ls -t docs/state/handoffs/<n>-*.md | head -1`). Read all of it.
 8. The thread's code state: `git branch --list "<n>-*"` and the PRs from that branch (`gh pr list --state all --json number,title,state,headRefName --jq '.[] | select(.headRefName | startswith("<n>-"))'`).
-9. Recommend the next step for that thread only.
+9. Recommend the next step for that thread only. Mention another issue or PR only if it blocks this one, and only after checking its state with `gh`.
 
 ## With no argument
 
 6. `gh issue list --state open --limit 20` and `gh pr list`.
 7. The open threads: the issue-numbered handoffs, newest first by modification time: `ls -t docs/state/handoffs | grep -E '^[0-9]+-' | grep -Ev '^[0-9]{4}-[0-9]{2}-[0-9]{2}-'` (the second filter skips old date-named handoffs). For each, read its header lines (issue, branch, PR, date). Read its "Open" section **only if** it is the newest handoff overall, or its issue is still open (`gh issue view <n> --json state --jq .state`). A handoff for a closed issue that is not the newest is a past snapshot: its Open items may have been resolved since, so do not report them. Do not read the rest.
 8. Recommend the earliest open issue in the current milestone, unless an open thread says something is more urgent.
+
+## Branch and PR state come from `gh`
+
+Whether a PR or branch is merged, open or closed is read with `gh` (`gh pr view N --json state`, `gh pr list --head <branch>`), never inferred by comparing local branches or reading `git log` against a local `main`. When the owner says something is merged or done, check it once with `gh` and go with the result; do not repeat the old state.
 
 ## Verify before reporting
 
