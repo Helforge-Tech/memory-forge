@@ -35,7 +35,7 @@ Finished work is in the working tree (or on a branch) and needs to be committed,
    ```
 
 8. **Check CI.** `gh pr checks <number>`. Report failures with the reason. Correct earlier commits with `git commit --fixup=<sha>`.
-9. **Tidy.** Before hand-off, fold fixups in: `GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash origin/main`. Pushing that needs `git push --force-with-lease`, which needs the owner's confirmation first.
+9. **Tidy.** Before hand-off, fold fixups in: `GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash origin/main`. Pushing that needs `git push --force-with-lease` on the issue's own branch, which the go-ahead on the issue covers (0027).
 10. **Review.** The main session (a subagent cannot start another) runs the `reviewer` agent on the PR number, right after the PR is opened or updated. Fix blocking findings on the same branch, ship the fix, and re-run the reviewer. Posting findings on the PR waits for the owner's go-ahead.
 11. **Hand off.** Report the PR URL, status and the reviewer's last result. Do not merge, and do not call the PR ready while a blocking finding stands. The owner merges with a merge commit in the GitHub UI.
 12. **After the merge,** offer to `git switch main && git pull --ff-only` and to delete the branch; ask before deleting. If the work used a worktree, finish it as [work-in-parallel](work-in-parallel.md) step 6 says: copy any local handoff to the main checkout, then remove the worktree.
@@ -43,7 +43,7 @@ Finished work is in the working tree (or on a branch) and needs to be committed,
 
 ### Variant: update a branch onto the latest `main`
 
-`git fetch origin`, `git rebase origin/main`, resolve conflicts file by file (`git add`, `git rebase --continue`; `git rebase --abort` to back out), then `git push --force-with-lease` after confirmation. Rebase only your own branches, and not mid-review unless asked. If a branch has diverged badly, cut a fresh one from `main` and cherry-pick.
+`git fetch origin`, `git rebase origin/main`, resolve conflicts file by file (`git add`, `git rebase --continue`; `git rebase --abort` to back out), then `git push --force-with-lease` on the issue's own branch (covered by the go-ahead on the issue, 0027). Rebase only the issue branch you created, and not mid-review unless asked. If a branch has diverged badly, cut a fresh one from `main` and cherry-pick.
 
 ## Standards used
 

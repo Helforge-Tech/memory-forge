@@ -55,7 +55,7 @@ Under 250 words (200 without the parallel section):
 - **Open threads:** one line each (issue, state, what is waiting). Skip this section with an issue number.
 - **Waiting on the owner:** open questions and unfinished items.
 - **Can run in parallel:** only with no argument and two or more candidates. The reviewer's groups in 2-4 lines, with the reason for anything that must wait. Omit otherwise.
-- **Recommended next step:** one step, with the exact prompt to start it.
+- **Recommended next step:** one step, with the exact prompt to start it. The prompt covers the whole step through to an open PR; it contains no stop points unless an owner decision blocks it (0027).
 - **Stale:** anything in the handoff that no longer matches the repo.
 
 Ignore any struck-through (`~~`) or `RESOLVED` line in a handoff: it is closed.

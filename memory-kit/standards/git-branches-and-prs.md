@@ -4,7 +4,7 @@ kind: git
 scope: portable
 status: active
 updated: 2026-10-20
-decision: ../../docs/decisions/0007-git-workflow-issue-branches-conventional-commits.md
+decision: ../../docs/decisions/0007-git-workflow-issue-branches-conventional-commits.md (rule 9: ../../docs/decisions/0027-what-a-go-ahead-covers.md)
 check: .githooks/pre-commit and .githooks/pre-push block main; reviewer for branch names and PR bodies
 ---
 
@@ -27,7 +27,7 @@ check: .githooks/pre-commit and .githooks/pre-push block main; reviewer for bran
    - A list of unrelated issues is the signal to split.
 7. **Merge with merge commits, not squash**, so each commit lands on `main` as written. This is a repo setting, and the owner changes it; do not change it.
 8. **Agents open the PR and get it merge-ready** (checks green, every commit clean, fixups folded in). **A human merges in the GitHub UI.** Agents never run `gh pr merge` and never enable auto-merge.
-9. **Rewriting pushed history needs the owner's confirmation each time.** Use `--force-with-lease`, never bare `--force`, and only on branches you created.
+9. **Rewriting pushed history** uses `--force-with-lease`, never bare `--force`, and only on the issue branch you created. After a rebase onto `origin/main` it is covered by the go-ahead on that issue ([0027](../../docs/decisions/0027-what-a-go-ahead-covers.md)); any other history rewrite needs the owner's confirmation.
 10. **Ask before** deleting a branch, closing a PR or issue, or changing repo settings.
 11. **Delete the branch after merge.**
 12. **One checkout per concurrent thread.** When more than one agent or session works at the same time, each gets its own git worktree and branch; never two threads in one folder.
