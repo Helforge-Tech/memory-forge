@@ -43,7 +43,7 @@ Finished work is in the working tree (or on a branch) and needs to be committed,
 
 ### Variant: update a branch onto the latest `main`
 
-`git fetch origin`, `git rebase origin/main`, resolve conflicts file by file (`git add`, `git rebase --continue`; `git rebase --abort` to back out), then `git push --force-with-lease` (covered by the go-ahead on the issue, 0027). Rebase only your own branches, and not mid-review unless asked. If a branch has diverged badly, cut a fresh one from `main` and cherry-pick.
+`git fetch origin`, `git rebase origin/main`, resolve conflicts file by file (`git add`, `git rebase --continue`; `git rebase --abort` to back out), then `git push --force-with-lease` on the issue's own branch (covered by the go-ahead on the issue, 0027). Rebase only the issue branch you created, and not mid-review unless asked. If a branch has diverged badly, cut a fresh one from `main` and cherry-pick.
 
 ## Standards used
 

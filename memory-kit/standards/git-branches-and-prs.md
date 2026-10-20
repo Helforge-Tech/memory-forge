@@ -4,7 +4,7 @@ kind: git
 scope: portable
 status: active
 updated: 2026-10-20
-decision: ../../docs/decisions/0007-git-workflow-issue-branches-conventional-commits.md
+decision: ../../docs/decisions/0007-git-workflow-issue-branches-conventional-commits.md (rule 9: ../../docs/decisions/0027-what-a-go-ahead-covers.md)
 check: .githooks/pre-commit and .githooks/pre-push block main; reviewer for branch names and PR bodies
 ---
 
