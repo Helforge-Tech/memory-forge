@@ -15,6 +15,12 @@ tasks:
       - task --list
 
   test:
-    desc: Test the kit's check scripts (baseline runner and kinds map)
+    desc: Test the kit's check scripts (baseline runner, kinds map, memory checks)
     cmds:
       - memory-kit/checks/test-baseline.sh
+      - memory-kit/checks/test-memory-check.sh
+
+  memory:
+    desc: Check the repo's memory for drift (repo map, links, commands, size, indexes, decisions)
+    cmds:
+      - memory-kit/checks/memory-check.sh | memory-kit/checks/baseline.sh run memory
