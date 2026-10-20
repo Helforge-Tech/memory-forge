@@ -16,6 +16,11 @@ Get oriented. Read only what is listed below; do not explore the repo. Handoffs 
 4. `git status --short`, `git branch --show-current` and `git log --oneline -8`.
 5. The current branch's PR, if it is not `main`: `gh pr list --state all --head "$(git branch --show-current)" --json number,state`. Go by the newest PR. If it is `MERGED`, the report says so in one line ("on `<branch>`, merged in #N; run `git switch main && git pull --ff-only`") and treats nothing on that branch as pending. If there is none (`[]`), the branch's work is unshipped.
 
+5a. **Clean up merged worktrees** (decision 0026, playbook `work-in-parallel`). Only when this session runs in the main checkout (the first path in step 3a); from inside a worktree, skip it and say so. For each other worktree whose branch's newest PR is `MERGED` (`gh pr list --state all --head <branch> --json number,state`; a branch with no PR is unshipped, leave it):
+   - Copy its `docs/state/handoffs/*.md` into this checkout's `docs/state/handoffs/` without overwriting: `find "<worktree>/docs/state/handoffs" -maxdepth 1 -name '*.md' -exec cp -n {} docs/state/handoffs/ \;`. If a name exists in both and the contents differ, copy the incoming one under a renamed file (`<name>-from-<branch>.md`) and say so.
+   - Remove the worktree with `git worktree remove "<worktree>"` only if `git -C "<worktree>" status --short` is empty (no uncommitted or untracked files). Otherwise leave it and say why.
+   - Report one line per worktree, for example "Cleaned up worktree `20-...` (PR #24 merged); 1 handoff copied." Do not delete the branch, local or remote; that waits for the owner's go-ahead.
+
 ## With an issue number (`/pickup <n>`)
 
 6. `gh issue view <n>`, the issue and its last few comments.
@@ -51,7 +56,7 @@ List what you dropped under **Stale**, with the reason (for example "0013 is acc
 
 Under 250 words (200 without the parallel section):
 
-- **Where we are:** 3 bullets.
+- **Where we are:** 3 bullets, plus the cleanup lines from step 5a if any.
 - **Open threads:** one line each (issue, state, what is waiting). Skip this section with an issue number.
 - **Waiting on the owner:** open questions and unfinished items.
 - **Can run in parallel:** only with no argument, two or more candidates, and the owner having asked. The reviewer's groups in 2-4 lines, with the reason for anything that must wait. Omit otherwise. Without it, a one-line offer to group the issues (only with two or more candidates).
@@ -60,4 +65,4 @@ Under 250 words (200 without the parallel section):
 
 Ignore any struck-through (`~~`) or `RESOLVED` line in a handoff: it is closed.
 
-Do not start any work. With no argument, ask which thread to resume.
+Apart from step 5a's cleanup, do not start any work. With no argument, ask which thread to resume.
