@@ -7,6 +7,7 @@ What outputs must satisfy. Standards are added the first time a task introduces 
 | git | [Branches and pull requests](git-branches-and-prs.md) | none yet | portable | active |
 | git | [Commits follow Conventional Commits](git-commits.md) | none yet | portable | active |
 | git | [Issues are the unit of tracked work](git-issues.md) | none yet | portable | active |
+| git | [A pull request holds code or memory, not both; a change that needs both is a stack](git-split-code-and-memory.md) | `test-pr-split.sh`, in `task test`; `pr-split.sh` in the CI gate | portable | active |
 | agents | [Cheap models do research; heavy models give guidance](agents-model-by-role.md) | none yet | portable | active |
 | tooling | [Every tool a repo needs is declared in its nix flake](tooling-declared-in-flake.md) | none yet | portable | active |
 | app | [Every app has format, lint and test gates from day one](app-quality-gates.md) | `task lint`, `task test` | portable | active |

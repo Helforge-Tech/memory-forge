@@ -14,7 +14,7 @@ A template for a repeatable way to build things (apps, sites, services, docs, Ia
 
 Run inside the nix dev shell (direnv, or `nix develop`). Entering the shell enables the secret-scan hook. The shell carries only what the process needs (`task`, `gh`, `gitleaks`); a project adds its own tools and commands. `task --list` shows them all. Don't invent commands; if one is missing, propose it. Setting a project up is a playbook, not a command.
 
-`task test` tests the kit's check scripts (`memory-kit/checks/test-baseline.sh`, `test-memory-check.sh`). `task memory` checks the repo's memory for drift. There is no other command yet.
+`task test` tests the kit's check scripts (`memory-kit/checks/test-baseline.sh`, `test-memory-check.sh`, `test-pr-split.sh`). `task memory` checks the repo's memory for drift. The CI gate also fails a PR that mixes code paths and memory paths ([standard](memory-kit/standards/git-split-code-and-memory.md)). There is no other command yet.
 
 ## How a session works
 

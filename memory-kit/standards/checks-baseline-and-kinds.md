@@ -21,7 +21,7 @@ check: memory-kit/checks/test-baseline.sh, run by task test
 7. **A check declares one kind** and runs once per instance, with the instance path as the `path` of its violations. A new matching folder is covered with no change to the check.
 8. **The scripts need bash 3.2 or newer** (macOS `/bin/bash`), so a check script uses no bash 4 features (`mapfile`, associative arrays, `${var,,}`) and no readline builtins such as `compgen` (the nix dev shell's bash lacks it). `memory-kit/checks/test-baseline.sh` runs under `/bin/bash` and the bash on `PATH`; run it with `task test` and with `nix develop -c task test`.
 9. **A check script and its baseline ship together.** A baseline entry exists only because of the script version that produced it, so changing a check's rules and its baseline go in one PR.
-10. **Root `checks/` is check data and counts as code, not memory.** It ships in the same PR as the code it describes. The scripts in `memory-kit/checks/` are memory ([0025](../../docs/decisions/0025-check-baselines-and-kinds-map.md)).
+10. **Root `checks/` is check data and counts as code, not memory.** It ships in the same PR as the code it describes. The scripts in `memory-kit/checks/` are memory, and a script ships with its baseline in one PR even so ([git-split-code-and-memory](git-split-code-and-memory.md) rule 6; [0025](../../docs/decisions/0025-check-baselines-and-kinds-map.md)).
 
 ## Why
 
