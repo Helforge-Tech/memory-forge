@@ -10,10 +10,12 @@ Root guidance drifts: the repo map lists folders that no longer exist, links poi
 ## Decision
 - **One script, many rules.** `memory-kit/checks/memory-check.sh` prints violations in the baseline format; `task memory` pipes it through `baseline.sh run memory`. The rules are listed in the script header and the standard.
 - **Links, not prose, are checked.** Only markdown links are resolved; paths written in backticks are not, because they are often examples or future paths. The repo map table is the one place backticked paths are read.
-- **Decisions are compared with the merge base** with `origin/main` (override with `MEMORY_CHECK_BASE`), ignoring the `- Status:` line. Where that ref does not exist the rule is skipped and says so.
+- **Decisions are compared with the merge base** with `origin/main` (override with `MEMORY_CHECK_BASE`), ignoring the `- Status:` line. Where there is no such ref or merge base (a shallow clone), the rule is skipped with a note locally, but is the violation `decision-base-missing` when `CI` or `MEMORY_REQUIRE_BASE` is set: a gate must not pass because it could not look.
+- **Task names come from the task runner** (`task --list-all --json`), which knows includes, namespaces and which Taskfile it prefers. Without it, the first `Taskfile.yml` or `Taskfile.yaml` is parsed at whatever indent it uses.
+- **A duplicate decision number is a violation** (`decision-number-duplicate`): parallel branches can pick the same next number.
 - **"Archival" means a folder holding `ARCHIVED.md`.**
 - **The memory map of §5a is not built here.** The checks read the default layout. A repo with a different layout sets that up when it adopts the kit (#7).
-- **Not in this first cut:** that every top-level folder matches a kind or is listed as ignored (needs a decision on how to list ignored folders), and a task-runner check for archived directories beyond links.
+- **Not in this first cut:** that each package or service folder of a monorepo is listed in the repo map; that every top-level folder matches a kind or is listed as ignored (needs a decision on how to list ignored folders), and a task-runner check for archived directories beyond links.
 
 ## Alternatives
 - **One script per rule.** Clearer files, but more entries in `task` and more baselines. One baseline named `memory` keeps the count in one place.

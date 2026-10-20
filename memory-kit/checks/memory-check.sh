@@ -10,13 +10,16 @@
 #   ref-missing          a markdown link in root guidance, a skill, a playbook or a standard
 #                        points at a path that does not exist (key: the link)
 #   ref-archived         such a link points into a folder that holds ARCHIVED.md
-#   command-missing      AGENTS.md names `task <name>` and Taskfile.yaml (or .yml) has no such task
+#   command-missing      AGENTS.md names `task <name>` and the task runner has no such task
+#                        (`task --list-all`; $MEMORY_TASK_BIN names another binary; without
+#                        one, the first Taskfile.yml or Taskfile.yaml is parsed)
 #   root-size            AGENTS.md is over its budget ($MEMORY_ROOT_BUDGET bytes, default 16000)
 #   index-status         a kit index row's status differs from the item's `status:` (key: the file)
 #   index-row-missing    a kit item has no row in its INDEX.md (key: the file)
 #   kinds-map-invalid    checks/kinds is malformed or has a kind with no instance (key: the kind)
 #   decision-base-missing  no base ref or merge base, and $CI or $MEMORY_REQUIRE_BASE is set
 #                        (otherwise the decisions check is skipped with a note)
+#   decision-number-duplicate  two files in docs/decisions share a number (key: the number)
 #   decision-edited      a decision differs from the merge base with $MEMORY_CHECK_BASE
 #                        (default origin/main) in any line but `- Status:`; also when deleted
 #
@@ -53,12 +56,20 @@ $tops
 EOF
 
   # --- commands named in root guidance exist in the task runner ----------------------
+  # Ask the task runner itself (it knows includes, namespaces and which Taskfile it
+  # prefers). Without it, read the first Taskfile's own tasks at whatever indent it uses.
   tasks=""
-  for tf in Taskfile.yaml Taskfile.yml; do
-    [ -f "$tf" ] || continue
-    tasks=$(awk '/^tasks:/{on=1;next} /^[^ #]/{on=0} on && /^  [A-Za-z0-9:_-]+:/{ sub(/^  /,""); sub(/:.*/,""); print }' "$tf")
-    break
-  done
+  if json=$("${MEMORY_TASK_BIN:-task}" --list-all --json 2>/dev/null); then
+    tasks=$(printf '%s' "$json" | grep -o '"name": *"[^"]*"' | sed 's/"name": *"\(.*\)"/\1/' || true)
+  else
+    for tf in Taskfile.yml Taskfile.yaml; do
+      [ -f "$tf" ] || continue
+      tasks=$(awk '/^tasks:/{on=1;next} /^[^ #]/{on=0}
+        on && /^[ ]+[A-Za-z0-9:_-]+:/ { n = match($0, /[^ ]/) - 1; if (!ind) ind = n
+          if (n == ind) { s = $0; sub(/^[ ]+/, "", s); sub(/:.*/, "", s); print s } }' "$tf")
+      break
+    done
+  fi
   names=$(grep -o '`task [a-z][A-Za-z0-9:_-]*`' AGENTS.md | sed 's/`task \(.*\)`/\1/' | sort -u || true)
   while IFS= read -r n; do
     [ -n "$n" ] || continue
@@ -134,6 +145,14 @@ EOF
 fi
 
 # --- decisions are not edited after merge ---------------------------------------------------
+dups=$(ls docs/decisions 2>/dev/null | sed -n 's/^\([0-9]\{4\}\)-.*/\1/p' | sort | uniq -d || true)
+while IFS= read -r n; do
+  [ -n "$n" ] || continue
+  emit decision-number-duplicate docs/decisions "$n"
+done <<EOF
+$dups
+EOF
+
 base=${MEMORY_CHECK_BASE:-origin/main}
 mb=""
 if git rev-parse --verify -q "$base^{commit}" >/dev/null 2>&1; then

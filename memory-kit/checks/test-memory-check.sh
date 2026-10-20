@@ -71,6 +71,27 @@ clean "a link inside an indented tilde fence is skipped"
 mk; mv Taskfile.yaml Taskfile.yml
 clean "a Taskfile.yml is read like Taskfile.yaml"
 
+mk; printf 'version: "3"\ntasks:\n    test:\n        cmds:\n            - true\n' > Taskfile.yaml
+clean "a 4-space Taskfile"
+out=$(MEMORY_TASK_BIN=none-such MEMORY_CHECK_BASE=base CHECKS_REPO_ROOT="$work/r" "$here/memory-check.sh" 2>&1)
+if [ -z "$out" ]; then echo "ok    a 4-space Taskfile, parsed without task"; else
+  echo "FAIL  a 4-space Taskfile, parsed without task"; printf '%s\n' "$out" | sed 's/^/      /'; fails=$((fails + 1)); fi
+
+mk; printf 'version: "3"\ntasks:\n  other:\n    cmds:\n      - true\n' > Taskfile.yml
+want "both Taskfile names: the .yml one wins, as task itself does" "command-missing~AGENTS.md~task test"
+
+if command -v task >/dev/null 2>&1; then
+  mk; agents '' 'Run `task docs:build`.'; mkdir docs/sub
+  printf 'version: "3"\ntasks:\n  build:\n    cmds:\n      - true\n' > docs/sub/Taskfile.yml
+  printf 'version: "3"\nincludes:\n  docs:\n    taskfile: ./docs/sub/Taskfile.yml\ntasks:\n  test:\n    cmds:\n      - true\n' > Taskfile.yaml
+  clean "a namespaced task from an include"
+else
+  echo "NOTE: no task binary; the include case was not tested"
+fi
+
+mk; echo x > docs/decisions/0001-y.md
+want "two decisions with one number" "decision-number-duplicate~docs/decisions~0001"
+
 mk; git branch -D base -q
 out=$(CI=true MEMORY_CHECK_BASE=base CHECKS_REPO_ROOT="$work/r" "$here/memory-check.sh" 2>&1)
 if printf '%s\n' "$out" | grep -q '^decision-base-missing'; then echo "ok    missing base fails under CI"; else
