@@ -36,9 +36,10 @@ Finished work is in the working tree (or on a branch) and needs to be committed,
 
 8. **Check CI.** `gh pr checks <number>`. Report failures with the reason. Correct earlier commits with `git commit --fixup=<sha>`.
 9. **Tidy.** Before hand-off, fold fixups in: `GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash origin/main`. Pushing that needs `git push --force-with-lease`, which needs the owner's confirmation first.
-10. **Hand off.** Report the PR URL and status. Do not merge. The owner merges with a merge commit in the GitHub UI.
-11. **After the merge,** offer to `git switch main && git pull --ff-only` and to delete the branch; ask before deleting. If the work used a worktree, copy any local handoff to the main checkout, then `git worktree remove` it.
-12. **If a step in this playbook was wrong or missing,** open an `improvement` issue naming the file to fix, then carry on.
+10. **Review.** The main session (a subagent cannot start another) runs the `reviewer` agent on the PR number, right after the PR is opened or updated. Fix blocking findings on the same branch, ship the fix, and re-run the reviewer. Posting findings on the PR waits for the owner's go-ahead.
+11. **Hand off.** Report the PR URL, status and the reviewer's last result. Do not merge, and do not call the PR ready while a blocking finding stands. The owner merges with a merge commit in the GitHub UI.
+12. **After the merge,** offer to `git switch main && git pull --ff-only` and to delete the branch; ask before deleting. If the work used a worktree, copy any local handoff to the main checkout, then `git worktree remove` it.
+13. **If a step in this playbook was wrong or missing,** open an `improvement` issue naming the file to fix, then carry on.
 
 ### Variant: update a branch onto the latest `main`
 
@@ -57,6 +58,7 @@ Finished work is in the working tree (or on a branch) and needs to be committed,
 - The branch is named `<issue#>-<short-kebab-summary>`, with no slashes.
 - Every commit is a clean, stand-alone conventional commit.
 - The branch is pushed and a PR is open with `Closes #<issue#>`, with checks green or the failures reported.
+- The `reviewer` agent has run on the final state of the PR with no blocking finding standing.
 - The PR URL is reported and the merge is left to the owner.
 - If the change added or changed a playbook or standard, the PR lists the standards touched and the knowledge added.
 

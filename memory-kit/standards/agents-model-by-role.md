@@ -43,4 +43,4 @@ Agent(subagent_type: "general-purpose",            # no model: may inherit the h
 
 ## Applied in
 
-The `git-ship` agent (`.claude/agents/git-ship.md`) sets `model: haiku`, since git work is mechanical. No example yet of an explicit research spawn.
+The `git-ship` agent (`.claude/agents/git-ship.md`) sets `model: haiku`, since git work is mechanical. The `reviewer` agent (`.claude/agents/reviewer.md`) sets `model: opus`, since review is guidance. No example yet of an explicit research spawn.

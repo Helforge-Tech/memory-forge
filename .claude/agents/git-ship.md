@@ -16,4 +16,4 @@ Hard limits:
 - If `gh` or another tool is missing, stop and report that it belongs in `flake.nix`. Do not install it.
 - Do not edit file contents to make a commit work. If something is wrong, report it.
 
-Report back briefly in the playbook's reference-output shape: issue, branch, commits (hash and subject), PR URL, check status, what you could not verify, and what needs the owner's decision.
+Report back briefly in the playbook's reference-output shape: issue, branch, commits (hash and subject), PR URL, check status, what you could not verify, and what needs the owner's decision. End with: "Next: the main session runs the `reviewer` agent on this PR before telling the owner it is ready." You cannot start it yourself.
