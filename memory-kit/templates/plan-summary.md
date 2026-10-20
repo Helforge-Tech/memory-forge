@@ -7,7 +7,7 @@ updated: YYYY-MM-DD
 
 # Plan: <title>
 
-Summary for multi-phase work. Details live in one `plan-phase.md` copy per phase, saved next to this file as `<issue#>-<summary>-phase-<n>.md`.
+Summary for multi-phase work. Blast radius and non-goals are stated here once, for all phases. Details live in one `plan-phase.md` copy per phase, saved next to this file as `<issue#>-<summary>-phase-<n>.md`.
 
 ## Goal
 What is true when all phases are done.

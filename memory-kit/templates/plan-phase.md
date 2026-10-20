@@ -8,7 +8,7 @@ updated: YYYY-MM-DD
 
 # Phase <n>: <name>
 
-Part of [the summary](<summary file>).
+Part of [the summary](<summary file>), which holds the non-goals and the blast radius for all phases.
 
 ## Goal
 What is true when this phase is done.
