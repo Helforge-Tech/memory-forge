@@ -75,14 +75,22 @@ done
 for f in $files; do
   [ -f "$f" ] || continue
   dir=$(dirname "$f")
-  links=$(awk '/^```/{f=!f;next} !f' "$f" | grep -o '\]([^)]*)' | sed 's/^](//; s/)$//' | sort -u || true)
+  # Fenced blocks and inline code are examples. A link may be <wrapped>, carry a "title"
+  # and use %20 for a space; the key keeps the link as written.
+  links=$(awk '/^```/{f=!f;next} !f' "$f" | sed 's/`[^`]*`//g' | grep -o '\]([^)]*)' | sed 's/^](//; s/)$//' | sort -u || true)
   while IFS= read -r l; do
     [ -n "$l" ] || continue
     case $l in http*|mailto:*|'#'*|/*) continue ;; esac
-    t=${l%%#*}; [ -n "$t" ] || continue
+    t=$l
+    case $t in
+      '<'*'>'*) t=${t#<}; t=${t%%>*} ;;
+      *) t=$(printf '%s' "$t" | sed 's/[[:space:]][[:space:]]*["'"'"'(].*$//') ;;
+    esac
+    t=$(printf '%s' "${t%%#*}" | sed 's/%20/ /g')
+    [ -n "$t" ] || continue
     if [ ! -e "$dir/$t" ]; then emit ref-missing "$f" "$l"; continue; fi
-    # walk up from the target to the repo root looking for an ARCHIVED.md marker
-    abs=$(cd "$(dirname "$dir/$t")" && pwd -P)
+    # walk up from the target (itself, if a folder) to the repo root for an ARCHIVED.md marker
+    if [ -d "$dir/$t" ]; then abs=$(cd "$dir/$t" && pwd -P); else abs=$(cd "$(dirname "$dir/$t")" && pwd -P); fi
     while [ "$abs" != "$(pwd -P)" ] && [ "$abs" != / ]; do
       if [ -e "$abs/ARCHIVED.md" ]; then emit ref-archived "$f" "$l"; break; fi
       abs=$(dirname "$abs")
@@ -123,7 +131,7 @@ fi
 base=${MEMORY_CHECK_BASE:-origin/main}
 if git rev-parse --verify -q "$base^{commit}" >/dev/null 2>&1; then
   mb=$(git merge-base HEAD "$base")
-  for f in $(git ls-tree -r --name-only "$mb" -- docs/decisions); do
+  git ls-tree -r --name-only "$mb" -- docs/decisions | while IFS= read -r f; do
     if [ ! -f "$f" ]; then emit decision-edited "$f" deleted; continue; fi
     if ! diff <(git show "$mb:$f" | grep -v '^- Status:') <(grep -v '^- Status:' "$f") >/dev/null; then
       emit decision-edited "$f"

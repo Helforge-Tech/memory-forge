@@ -52,6 +52,16 @@ want "link to a missing path" "ref-missing~AGENTS.md~nope.md"
 mk; agents '' 'See [x](docs/old/f.md#top).'; mkdir docs/old; echo x > docs/old/f.md; echo old > docs/old/ARCHIVED.md
 want "link into an archived folder" "ref-archived~AGENTS.md~docs/old/f.md#top"
 
+mk; agents '' 'See [x](docs/old/) and [y](docs/old).'; mkdir docs/old; echo old > docs/old/ARCHIVED.md
+want "link to an archived folder itself" "ref-archived~AGENTS.md~docs/old/"
+
+mk; agents '' 'See [a](docs/f.md "Title"), [b](docs/my%20dir/f.md), [c](<docs/my dir/f.md>) and `[d](nope.md)`.'
+mkdir "docs/my dir"; echo x > docs/f.md; echo x > "docs/my dir/f.md"
+clean "titled, encoded and wrapped links resolve; links in inline code are skipped"
+
+mk; echo x > "docs/decisions/0002 y.md"; git add -A; git commit -qm two; git branch -f base
+clean "a decision file name with a space is not split"
+
 mk; agents '' "$(printf '```\n[x](nope.md)\n```')"
 clean "a link inside a code fence is skipped"
 
