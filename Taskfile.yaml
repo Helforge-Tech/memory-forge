@@ -22,5 +22,6 @@ tasks:
 
   memory:
     desc: Check the repo's memory for drift (repo map, links, commands, size, indexes, decisions)
+    set: [pipefail]
     cmds:
       - memory-kit/checks/memory-check.sh | memory-kit/checks/baseline.sh run memory
