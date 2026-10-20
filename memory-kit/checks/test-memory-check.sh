@@ -81,6 +81,10 @@ mk; printf 'version: "3"\ntasks:\n  other:\n    cmds:\n      - true\n' > Taskfil
 want "both Taskfile names: the .yml one wins, as task itself does" "command-missing~AGENTS.md~task test"
 
 if command -v task >/dev/null 2>&1; then
+  mk; agents '' 'Run `task t`.'
+  printf 'version: "3"\ntasks:\n  test:\n    aliases: [t]\n    cmds:\n      - true\n' > Taskfile.yaml
+  clean "a task alias"
+
   mk; agents '' 'Run `task docs:build`.'; mkdir docs/sub
   printf 'version: "3"\ntasks:\n  build:\n    cmds:\n      - true\n' > docs/sub/Taskfile.yml
   printf 'version: "3"\nincludes:\n  docs:\n    taskfile: ./docs/sub/Taskfile.yml\ntasks:\n  test:\n    cmds:\n      - true\n' > Taskfile.yaml
