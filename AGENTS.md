@@ -20,7 +20,7 @@ This repo has no commands of its own yet beyond `task --list`.
 
 0. **Start from an issue.** Planned work is a GitHub issue in the current milestone. `/pickup` names the next one. One session works one issue; `/handoff` comments on it.
 1. **Scope first.** State which areas are in scope and out of scope. Stay inside; ask before crossing.
-2. **Check before create.** Before making a new kind of thing (page, API call, config, script), look in `memory-kit/standards/INDEX.md` and `memory-kit/playbooks/INDEX.md`.
+2. **Check before create.** Before making a new kind of thing (page, API call, config, script), look in `docs/standards/INDEX.md` (this repo's own standards, if it exists), `memory-kit/standards/INDEX.md` and `memory-kit/playbooks/INDEX.md`. A repo standard beats a kit standard only if a decision names the one it overrides ([standard](memory-kit/standards/standards-tiers.md)).
 3. **Gaps.** If there is no standard or playbook, stop. Give 2-3 options, a recommendation and the strongest objection. The human decides. Record it in `docs/decisions/` and `docs/state/gaps.md`. To add or change a standard, convention or playbook, use `/standard`.
 4. **Close.** Run `/handoff`: it writes a local, untracked note in `docs/state/handoffs/` that holds gap edits and proposed memory changes, and edits no tracked file. A human promotes them in a weekly PR; nothing becomes `active` otherwise.
 

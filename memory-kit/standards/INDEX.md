@@ -1,6 +1,6 @@
 # Standards
 
-What outputs must satisfy. Standards are added the first time a task introduces a new kind of thing.
+What outputs must satisfy. Standards are added the first time a task introduces a new kind of thing. These are the kit tier; a repo's own standards live in `docs/standards/` and override a kit standard only by decision ([standards-tiers](standards-tiers.md)).
 
 | Kind | Standard | Check | Scope | Status |
 |---|---|---|---|---|
@@ -17,3 +17,4 @@ What outputs must satisfy. Standards are added the first time a task introduces 
 | app | [An app has size budgets that CI or the build command check](app-performance-budgets.md) | `task budget`; `task budget:web` in CI | portable | active |
 | app | [An app ships no unused code, dependencies, permissions or template leftovers](app-no-bloat.md) | reviewer | portable | active |
 | app | [A desktop app signs users in through the system browser, keeps tokens out of the webview, and fails closed](app-auth.md) | reviewer | portable | active |
+| standards | [Standards have two tiers; a repo overrides a kit standard only by decision](standards-tiers.md) | reviewer | portable | active |
