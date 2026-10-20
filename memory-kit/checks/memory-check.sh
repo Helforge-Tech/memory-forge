@@ -77,7 +77,7 @@ for f in $files; do
   dir=$(dirname "$f")
   # Fenced blocks and inline code are examples. A link may be <wrapped>, carry a "title"
   # and use %20 for a space; the key keeps the link as written.
-  links=$(awk '/^```/{f=!f;next} !f' "$f" | sed 's/`[^`]*`//g' | grep -o '\]([^)]*)' | sed 's/^](//; s/)$//' | sort -u || true)
+  links=$(awk '/^[ \t]*(```|~~~)/{f=!f;next} !f' "$f" | sed 's/`[^`]*`//g' | grep -o '\]([^)]*)' | sed 's/^](//; s/)$//' | sort -u || true)
   while IFS= read -r l; do
     [ -n "$l" ] || continue
     case $l in http*|mailto:*|'#'*|/*) continue ;; esac
