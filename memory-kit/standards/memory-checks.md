@@ -22,7 +22,7 @@ check: memory-kit/checks/test-memory-check.sh, run by task test; task memory run
    - `root-size`: `AGENTS.md` stays under 16000 bytes (`MEMORY_ROOT_BUDGET` sets another budget).
    - `index-status` and `index-row-missing`: each kit standard and playbook has a row in its `INDEX.md`, and the row's status matches the item's `status:`.
    - `kinds-map-invalid`: `checks/kinds`, if present, parses and every kind has an instance.
-   - `decision-edited`: a decision differs from the merge base with `origin/main` only in its `- Status:` line, and none is deleted.
+   - `decision-edited`: a decision differs from the merge base with `origin/main` only in its `- Status:` line, and none is deleted. With `CI` or `MEMORY_REQUIRE_BASE` set, a missing base or merge base (a shallow clone) is the violation `decision-base-missing`, not a skip: fetch full history in CI.
 3. **Existing violations go in the baseline** (`checks/baselines/memory`) when the check is introduced, and the count only goes down. A permanent exception needs a reason (`checks/exceptions/memory`).
 4. **A new rule ships with a test** in `memory-kit/checks/test-memory-check.sh` that makes it fire.
 
@@ -39,4 +39,4 @@ Don't: write a path in backticks and expect it to be checked (only links and the
 
 ## Applied in
 
-This repo: `task memory`. Not wired into CI yet (no workflow exists; see #16).
+This repo: `task memory`. Not wired into CI yet.

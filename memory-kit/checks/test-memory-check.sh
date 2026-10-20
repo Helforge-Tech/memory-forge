@@ -68,6 +68,17 @@ clean "a link inside a code fence is skipped"
 mk; agents '' "$(printf '  ~~~\n  [x](nope.md)\n  ~~~')"
 clean "a link inside an indented tilde fence is skipped"
 
+mk; mv Taskfile.yaml Taskfile.yml
+clean "a Taskfile.yml is read like Taskfile.yaml"
+
+mk; git branch -D base -q
+out=$(CI=true MEMORY_CHECK_BASE=base CHECKS_REPO_ROOT="$work/r" "$here/memory-check.sh" 2>&1)
+if printf '%s\n' "$out" | grep -q '^decision-base-missing'; then echo "ok    missing base fails under CI"; else
+  echo "FAIL  missing base fails under CI"; printf '%s\n' "$out" | sed 's/^/      /'; fails=$((fails + 1)); fi
+out=$(env -u CI -u MEMORY_REQUIRE_BASE MEMORY_CHECK_BASE=base CHECKS_REPO_ROOT="$work/r" "$here/memory-check.sh" 2>/dev/null)
+if [ -z "$out" ]; then echo "ok    missing base skips outside CI"; else
+  echo "FAIL  missing base skips outside CI"; fails=$((fails + 1)); fi
+
 mk; agents '' 'Run `task nope`.'
 want "command that the task runner lacks" "command-missing~AGENTS.md~task nope"
 
