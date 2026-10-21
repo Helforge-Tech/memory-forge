@@ -1,7 +1,7 @@
 ---
 title: Ship a change to a branch and open a PR
 status: active
-updated: 2026-10-20
+updated: 2026-10-21
 ---
 
 # Ship a change to a branch and open a PR
@@ -45,7 +45,7 @@ Finished work is in the working tree (or on a branch) and needs to be committed,
 ### Variant: ship a stack (code PR, then memory PR)
 
 1. Commit the code files on `<issue#>-<short-summary>`. Cut `<issue#>-<short-summary>-memory` from it and commit the memory files there. Neither layer may leave the other's files in its diff, and a layer must not depend on something only the other has (move that thing down, or say the stack passes only as a whole).
-2. Create the PRs. With `gh stack` available (the dev shell provides it; check `gh stack --help`): `gh stack init <lower> <upper>` for existing branches, then `gh stack submit`. Otherwise the fallback, which always works: `git push -u origin <lower> <upper>`, `gh pr create --base main --head <lower>`, then `gh pr create --base <lower> --head <upper>`.
+2. Create the PRs. With `gh stack` available (the dev shell provides it; check `gh stack --help`): `gh stack init <lower> <upper>` for existing branches, then `gh stack submit`. If the lower PR is already open, link the two PRs instead: `gh stack link <lower PR> <upper PR>` (create the upper PR first, with `--base <lower>`). Without `gh stack` installed, the fallback, which always works: `git push -u origin <lower> <upper>`, `gh pr create --base main --head <lower>`, then `gh pr create --base <lower> --head <upper>`.
 3. Bodies: each names the other PR and says "Stacked: merge <lower PR> first". The upper PR has `Closes #<issue#>`; the lower has `Refs #<issue#>`.
 4. Locally, `GATE_BASE=<lower branch> task split` checks the upper layer (the default base is `origin/main`, which sees both layers). Run steps 9 to 11 on each PR; the reviewer runs on both, the lower first.
 5. After a rebase of the lower branch onto `origin/main`, rebase the upper onto it (`git rebase --onto <lower> <old lower tip> <upper>`, or `gh stack rebase`) and push both with `--force-with-lease`. With `gh stack`, GitHub retargets the upper PR itself when the lower one merges, and `gh stack sync` rebases it (needed after a squash merge); with the plain fallback, merge the lower PR without deleting its branch, retarget the upper to `main` (`gh pr edit <upper> --base main`), rebase it after a squash merge, and only then delete the lower branch: deleting it first closes the upper PR ([standard](../standards/git-split-code-and-memory.md) rule 7).
