@@ -3,7 +3,7 @@ title: Every repo gates pull requests with one required CI job that calls the re
 kind: ci
 scope: portable
 status: active
-updated: 2026-10-20
+updated: 2026-10-21
 decision: ../../docs/decisions/0029-ci-pr-gate.md
 check: reviewer (the workflow and the branch-protection setting)
 ---
@@ -61,4 +61,10 @@ Don't: pin an action by tag only (pin by commit SHA, tag in a comment), drop `pe
 
 ## Applied in
 
-This repo: `.github/workflows/gate.yml` runs `task test`, `task memory` and `task split`. It has no `task secrets` yet, so the secret scan is not in the gate (see `docs/state/gaps.md`).
+This repo: `.github/workflows/gate.yml` runs `task test`, `task memory`, `task split` and `task secrets`. `task secrets` is a few lines of shell in the `Taskfile.yaml` (a new top-level folder for one script would need an `AGENTS.md` repo-map row, which a code-only PR cannot carry) that call `gitleaks git --log-opts="$GATE_BASE..HEAD"`.
+
+## Verified
+
+On 2026-10-21: locally, an unresolved base exits 2, an empty range warns, and with `CI` set it fails, and a commit with a fake key in a scratch clone fails the scan. In CI on a PR (#49), `github.event.pull_request.base.sha` resolved after `fetch-depth: 0` and the scan covered the PR's commits.
+
+Not verified: `github.event.before` on a push to `main` (checkable on the first push after #49 and its memory PR merge), and the required-check setting.
