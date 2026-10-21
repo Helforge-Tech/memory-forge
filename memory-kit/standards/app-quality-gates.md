@@ -22,11 +22,11 @@ check: task lint and task test (run by CI); reviewer for test coverage per layer
 ## Why
 
 - A change the agent makes is judged by the same bar every time, without a human re-checking style.
-- A mocked UI test is cheap but proves nothing about the real bridge; the native half of the smoke test and, later, an end-to-end test cover that.
+- A mocked UI test is cheap but proves nothing about the real boundary between layers (for Tauri, the IPC bridge); the native half of the smoke test and, later, an end-to-end test cover that.
 
 ## Do / Don't
 
-Do: `cargo clippy --all-targets -- -D warnings`.
+Do: `cargo clippy --all-targets -- -D warnings` (Rust).
 
 Don't: add `#[allow(...)]` or lower a lint level to get a PR green.
 

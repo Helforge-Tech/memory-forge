@@ -12,7 +12,7 @@ check: reviewer (automatic checks suggested below, not added yet)
 
 ## Rule
 
-1. **No unused dependencies.** Every package and crate in the manifests is imported or called by the app. Remove one when its last use goes.
+1. **No unused dependencies.** Every package (npm package, crate, or the stack's equivalent) in the manifests is imported or called by the app. Remove one when its last use goes.
 2. **No unused plugins or permissions.** A plugin the app does not call is removed together with its initialisation and its permission or capability entries. Permissions grant only what the app uses.
 3. **No template leftovers.** After scaffolding, delete the generator's demo code, demo commands, sample styles, images, placeholder titles and favicon links, and anything else the first feature does not need.
 4. **No dead code or commented-out code** in committed files.
@@ -20,7 +20,7 @@ check: reviewer (automatic checks suggested below, not added yet)
 
 ## Why
 
-- These are production apps, not proofs of concept. Every unused dependency adds download size, attack surface and upgrade work, and every unused permission widens what a compromised web view can do.
+- These are production apps, not proofs of concept. Every unused dependency adds download size, attack surface and upgrade work, and every unused permission widens what a compromised component such as a web view can do.
 - A clean first commit gives the next session nothing to wonder about.
 
 ## Do / Don't
