@@ -19,10 +19,12 @@ A repo is adopted ([adopt-existing-repo](adopt-existing-repo.md)) and one more k
 
    Rank by the sum. Break a tie with risk, then breadth. Scores are a starting order for the owner, not a verdict: the owner picks which standard comes first. The scores are derived from the repo, so do not ask the owner to supply them.
 2. **Inventory the kind** in the areas in scope: the variants that exist, roughly how often each appears, and one example path each. Output: a short table in the issue or the PR description, not a new file in the repo.
-3. **Write the standard from the best existing variant.** The best variant is the reference and the standard's "Applied in" names it. Use `/standard`; it adds the decision when the choice was real. Where two variants are about equal, that is an owner decision (options, a recommendation, the strongest objection).
-4. **Add the check in baseline mode.** Write the check to print `rule<TAB>path[<TAB>key]`, find its targets through the kinds map, and write today's violations to its baseline in its own commit with the count in the message ([checks-baseline-and-kinds](../standards/checks-baseline-and-kinds.md)). New code complies from the day the check merges: a new violation fails the gate.
-5. **File the migration as small issues.** The standard's "Applied in" list is the migration list: one issue per area, scoped to this standard only, each worked with [app-bring-to-standard](app-bring-to-standard.md) or the matching playbook. A feature PR does not fix other areas' violations on the side.
+3. **Write the standard from the best existing variant.** The best variant is the reference and the standard's "Applied in" names it; the areas that are not in line are found by the check in step 4. Use `/standard`; it adds the decision when the choice was real. Where two variants are about equal, that is an owner decision (options, a recommendation, the strongest objection).
+4. **Add the check in baseline mode.** Write the check to print `rule<TAB>path[<TAB>key]`, find its targets through the kinds map, and write today's violations to its baseline with `baseline.sh regenerate <check>`, in its own commit with the count in the message; the script and its baseline ship in one PR ([checks-baseline-and-kinds](../standards/checks-baseline-and-kinds.md)). New code complies from the day the check merges: a new violation fails the gate.
+5. **File the migration as small issues.** The migration list is the distinct `path` values in `checks/baselines/<check>`: one issue per area, scoped to this standard only, each worked with [app-bring-to-standard](app-bring-to-standard.md) or the matching playbook. A feature PR does not fix other areas' violations on the side.
 6. **Read progress from the baseline.** The number of lines in `checks/baselines/<check>` is the progress; each migration PR removes its lines. Do not keep a hand-written list. The standard is rolled out when the baseline is empty, and the check then runs without one.
+
+Decision: [0033](../../docs/decisions/0033-rank-standards-by-breadth-churn-risk.md) (the ranking).
 
 ## Standards used
 
