@@ -19,7 +19,7 @@ Run inside the nix dev shell (direnv, or `nix develop`). Entering the shell enab
 ## How a session works
 
 0. **Start from an issue.** Planned work is a GitHub issue in the current milestone. `/pickup` names the next one. One session works one issue; `/handoff` comments on it. "In parallel" means this session works in its own worktree ([playbook](memory-kit/playbooks/work-in-parallel.md)).
-1. **Scope first.** State which areas are in scope and out of scope. Stay inside; ask before crossing.
+1. **Scope first.** State which areas are in scope and out of scope. Read the area brief (`AGENTS.md` in the area folder, linked from the repo map) of each area in scope, if the repo has one ([standard](memory-kit/standards/memory-area-briefs.md)). Stay inside; ask before crossing.
 2. **Check before create.** Before making a new kind of thing (page, API call, config, script), look in `docs/standards/INDEX.md` (this repo's own standards, if it exists), `memory-kit/standards/INDEX.md` and `memory-kit/playbooks/INDEX.md`. A repo standard beats a kit standard only if a decision names the one it overrides ([standard](memory-kit/standards/standards-tiers.md)).
 3. **Gaps.** If there is no standard or playbook, stop. Give 2-3 options, a recommendation and the strongest objection. The human decides. Record it in `docs/decisions/` and `docs/state/gaps.md`. To add or change a standard, convention or playbook, use `/standard`.
 4. **Review.** After `git-ship` opens or updates a PR, run the `reviewer` agent on it (a subagent cannot start another). Fix blocking findings and re-run before telling the owner the PR is ready.

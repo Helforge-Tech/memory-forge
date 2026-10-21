@@ -14,6 +14,9 @@
 #                        (`task --list-all`; $MEMORY_TASK_BIN names another binary; without
 #                        one, the first Taskfile.yml or Taskfile.yaml is parsed)
 #   root-size            AGENTS.md is over its budget ($MEMORY_ROOT_BUDGET bytes, default 16000)
+#   brief-unlinked       a tracked area brief (<folder>/AGENTS.md) is not linked from the repo map
+#   brief-size           an area brief is over its budget ($MEMORY_BRIEF_BUDGET bytes, default 4000)
+#   brief-path-missing   a path in a brief's `## Code` section does not exist (key: the path)
 #   index-status         a kit index row's status differs from the item's `status:` (key: the file)
 #   index-row-missing    a kit item has no row in its INDEX.md (key: the file)
 #   kinds-map-invalid    checks/kinds is malformed or has a kind with no instance (key: the kind)
@@ -86,9 +89,33 @@ EOF
     || emit root-size AGENTS.md
 fi
 
+# --- area briefs (standard area-briefs) ----------------------------------------------------
+# A brief is a tracked AGENTS.md below the root, outside dot-folders.
+briefs=$(git ls-files | grep '/AGENTS\.md$' | grep -v '^\.' || true)
+if [ -n "$briefs" ] && [ -f AGENTS.md ]; then
+  map=$(awk '/^## Repo map/{on=1;next} /^## /{on=0} on' AGENTS.md)
+  while IFS= read -r b; do
+    [ -n "$b" ] || continue
+    printf '%s\n' "$map" | grep -qF -e "]($b)" -e "](./$b)" || emit brief-unlinked "$b"
+    "$here/size-budget.sh" "$b" "$b" "${MEMORY_BRIEF_BUDGET:-4000}" >/dev/null 2>&1 \
+      || emit brief-size "$b"
+    bdir=$(dirname "$b")
+    # `## Code` lists one path per bullet, first in backticks, relative to the brief's folder
+    paths=$(awk '/^## Code/{on=1;next} /^## /{on=0} on' "$b" | sed -n 's/^[-*] *`\([^`]*\)`.*/\1/p')
+    while IFS= read -r p; do
+      [ -n "$p" ] || continue
+      [ -e "$bdir/${p%/}" ] || emit brief-path-missing "$b" "$p"
+    done <<EOF
+$paths
+EOF
+  done <<EOF
+$briefs
+EOF
+fi
+
 # --- links ----------------------------------------------------------------------------
 # Links inside fenced code blocks are examples and are skipped.
-files="AGENTS.md CLAUDE.md memory-kit/README.md"
+files="AGENTS.md CLAUDE.md memory-kit/README.md $(printf '%s' "$briefs" | tr '\n' ' ')"
 for f in .claude/skills/*/SKILL.md memory-kit/playbooks/*.md memory-kit/standards/*.md; do
   files="$files $f"
 done

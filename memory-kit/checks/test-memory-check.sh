@@ -130,5 +130,28 @@ want "decision deleted" "decision-edited~docs/decisions/0001-x.md~deleted"
 mk; printf '# 1\n\n- Status: superseded by 0002\n- Date: d\n\nbody\n' > docs/decisions/0001-x.md
 clean "a decision's status line may change"
 
+brief() { # brief <folder> <body>: a tracked brief in <folder>
+  mkdir -p "$1/src"; printf '# b\n\n## Code\n\n%s\n' "$2" > "$1/AGENTS.md"; git add -A
+}
+
+mk; mkdir web; brief web '- `src/` the code'; agents '| `web/` | [brief](web/AGENTS.md) |'
+clean "a linked brief with existing paths and a small size"
+
+mk; brief web '- `src/` the code'; agents '| `web/` | w |'
+want "brief not linked from the repo map" "brief-unlinked~web/AGENTS.md"
+
+mk; brief web '- `src/` the code
+- `gone/` missing'; agents '| `web/` | [brief](web/AGENTS.md) |'
+want "brief path that does not exist" "brief-path-missing~web/AGENTS.md~gone/"
+
+mk; brief web '- `src/` the code'; agents '| `web/` | [brief](web/AGENTS.md) |'
+out=$(MEMORY_BRIEF_BUDGET=10 MEMORY_CHECK_BASE=base CHECKS_REPO_ROOT="$work/r" "$here/memory-check.sh" 2>&1)
+if printf '%s\n' "$out" | grep -qxF "$(printf 'brief-size\tweb/AGENTS.md')"; then echo "ok    brief over its budget"; else
+  echo "FAIL  brief over its budget"; fails=$((fails + 1)); fi
+
+mk; brief web '- `src/` the code
+See [x](nope.md).'; agents '| `web/` | [brief](web/AGENTS.md) |'
+want "link in a brief to a missing path" "ref-missing~web/AGENTS.md~nope.md"
+
 [ "$fails" = 0 ] && echo "all memory-check tests passed" || echo "$fails failed"
 exit $((fails > 0))
