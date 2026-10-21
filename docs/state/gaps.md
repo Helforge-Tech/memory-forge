@@ -5,8 +5,7 @@ Kinds of things with no standard yet, and tasks with no playbook. A session that
 | Gap | Found in | Status |
 |---|---|---|
 | No playbook yet for setting up CI (the PR gate has a standard, `ci-pr-gate`), or for any app type other than desktop; no standard for IaC, services or web | template | open |
-| `main` is protected by the ruleset "Protect Main" (pull request required, no deletion, no force push, no bypass), but it does not yet require the `gate` job. The `gate` workflow comes with #11's code PR; add the required check once it has merged and run on a PR | #16 | open |
-| This repo's `gate` job (`.github/workflows/gate.yml`) runs `task test`, `task memory` and `task split`, but has no `task secrets`, so the secret scan is not in the gate yet. The kit ships no secret-scan script, so every adopting repo writes its own (found in the #7 dry run) | #16, #11, #7 | open |
+| `main` is protected by the ruleset "Protect Main" (pull request required, no deletion, no force push, no bypass), but it does not yet require the `gate` job. The `gate` workflow, now with `task secrets`, has run on PRs; the owner adds the required check (a repo setting) | #16 | open |
 | `gh stack` is a preview feature (the flake provides it). Creating, rebasing, syncing and merging a two-layer stack, and the second-PR fallback, were verified (see `git-split-code-and-memory`); not verified: three or more layers, conflicts, required checks or a merge queue, the fallback with merge commits, merging a stacked PR from the GitHub UI | #11, #42 | partly done |
 | How notes link to each other: `[[wikilinks]]` vs relative markdown links | opening the repo in Obsidian | open |
 | Checks for branch names and commit scopes (hooks block `main` and check commit type and format) | memory standards (0007) | partly done |
