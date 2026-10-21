@@ -12,3 +12,5 @@ How we do a recurring kind of task.
 | [install-kit-existing-repo](install-kit-existing-repo.md) | The owner of an existing repo wants the kit installed: clash check, copy-in, memory PR | active |
 | [adopt-existing-repo](adopt-existing-repo.md) | The kit is installed in an existing repo and the repo must now be brought under it, in stages (survey, sort, root guidance, baselines, gate) | active |
 | [roll-out-a-standard](roll-out-a-standard.md) | An adopted repo needs one more standard while existing code is not yet in line: rank, inventory, write, baseline the check, file the migration | active |
+| [contribute-upstream](contribute-upstream.md) | A project changed the framework tier (`memory-kit/`, skills, agents, hooks) and the owner agrees to submit it to the template | active |
+| [take-in-upstream](take-in-upstream.md) | The owner asks to bring the template's newer changes into a project | active |
