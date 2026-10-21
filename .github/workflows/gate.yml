@@ -1,6 +1,5 @@
 # The one required job for pull requests (standard ci-pr-gate, decision 0029). It calls the
-# repo's own commands. The secret scan is not here yet: there is no `task secrets`
-# (docs/state/gaps.md).
+# repo's own commands.
 name: ci
 on:
   pull_request:
@@ -26,3 +25,5 @@ jobs:
         run: nix develop -c task memory
       - name: task split
         run: nix develop -c task split
+      - name: task secrets
+        run: nix develop -c task secrets
