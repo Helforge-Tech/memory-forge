@@ -9,3 +9,4 @@ How we do a recurring kind of task.
 | [app-bring-to-standard](app-bring-to-standard.md) | An existing app must conform to the standards that apply to it | active |
 | [work-in-parallel](work-in-parallel.md) | The owner asks for an issue to be worked in parallel with another session | active |
 | [plan-a-piece-of-work](plan-a-piece-of-work.md) | Larger work needs a plan before code; includes the reviewer's plan mode and the plan templates in the [templates index](../templates/INDEX.md) | active |
+| [install-kit-existing-repo](install-kit-existing-repo.md) | The owner of an existing repo wants the kit installed: clash check, copy-in, memory PR | active |
