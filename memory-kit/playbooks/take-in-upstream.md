@@ -8,7 +8,7 @@ updated: 2026-10-21
 
 ## When to use
 
-The owner asks to bring the template's newer changes into a project made from it. On request only; nothing prompts it. Needs `docs/state/kit-source.md` (written by [install-kit-existing-repo](install-kit-existing-repo.md)).
+The owner asks to bring the template's newer changes into a project made from it. On request only; nothing prompts it. Needs `docs/state/kit-source.md` (written by [install-kit-existing-repo](install-kit-existing-repo.md)); for a project copied without it, see the first paragraph of [contribute-upstream](contribute-upstream.md) for how to write it.
 
 ## Steps
 
