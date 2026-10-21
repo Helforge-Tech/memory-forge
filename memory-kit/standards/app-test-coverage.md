@@ -3,7 +3,7 @@ title: Every app enforces test coverage thresholds that only go up
 kind: app
 scope: portable
 status: active
-updated: 2026-10-15
+updated: 2026-10-21
 decision: none
 check: task coverage (run by CI); reviewer for lowered thresholds
 ---
@@ -12,7 +12,7 @@ check: task coverage (run by CI); reviewer for lowered thresholds
 
 ## Rule
 
-1. **Every test layer is measured with coverage** and gated by a threshold: the native layer and the UI layer separately, with the tools each stack uses.
+1. **Every test layer is measured with coverage** and gated by a threshold: each layer separately (for a Tauri app, the native layer and the UI layer), with the tools each stack uses.
 2. **Thresholds are set from measurement when coverage is introduced,** never guessed, and are recorded in the config the tool reads (not in prose).
 3. **A threshold is never lowered.** It rises as tests are added. Lowering one needs a decision that says why.
 4. **Entry points that only launch or mount the app are excluded by path,** and the exclusion is commented where it is configured. Nothing else is excluded to improve a number.

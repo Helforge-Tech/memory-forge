@@ -3,7 +3,7 @@ title: An app ships no unused code, dependencies, permissions or template leftov
 kind: app
 scope: portable
 status: active
-updated: 2026-10-15
+updated: 2026-10-21
 decision: none
 check: reviewer (automatic checks suggested below, not added yet)
 ---
@@ -13,7 +13,7 @@ check: reviewer (automatic checks suggested below, not added yet)
 ## Rule
 
 1. **No unused dependencies.** Every package and crate in the manifests is imported or called by the app. Remove one when its last use goes.
-2. **No unused plugins or permissions.** A plugin the app does not call is removed together with its initialisation and its capability entries. Capabilities grant only what the app uses.
+2. **No unused plugins or permissions.** A plugin the app does not call is removed together with its initialisation and its permission or capability entries. Permissions grant only what the app uses.
 3. **No template leftovers.** After scaffolding, delete the generator's demo code, demo commands, sample styles, images, placeholder titles and favicon links, and anything else the first feature does not need.
 4. **No dead code or commented-out code** in committed files.
 5. **Production profile settings from the generator stay** (release optimisation, stripping); do not remove them to save a build minute.
@@ -25,7 +25,7 @@ check: reviewer (automatic checks suggested below, not added yet)
 
 ## Do / Don't
 
-Do: remove an unused plugin from the Rust dependency list, its builder call, the JavaScript package and the capability entry together.
+Do: remove an unused plugin (Tauri example: from the Rust dependency list, its builder call, the JavaScript package and the capability entry, together).
 
 Don't: leave a plugin "in case we need it later".
 
