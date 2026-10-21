@@ -17,7 +17,7 @@ check: memory-check.sh rules brief-unlinked, brief-size, brief-path-missing, tes
    - `## What it is`: one or two sentences.
    - `## Commands`: the commands for this area, as run from the repo root.
    - `## Local standards`: links to the standards and playbooks that apply here (link, never copy).
-   - `## Code`: one bullet per path, the path first in backticks and relative to the brief's folder (``- `src/` the UI``).
+   - `## Code`: one bullet per path (a real path, no globs), the path first in backticks and relative to the brief's folder (``- `src/` the UI``).
    - `## Owners`: names or roles, or "none".
 3. **The root repo-map row for the area links its brief**, as in the block below. The root stays a short map.
 

@@ -103,7 +103,7 @@ if [ -n "$briefs" ] && [ -f AGENTS.md ]; then
       || emit brief-size "$b"
     bdir=$(dirname "$b")
     # `## Code` lists one path per bullet, first in backticks, relative to the brief's folder
-    paths=$(awk '/^## Code[ \t]*$/{on=1;next} /^## /{on=0} on' "$b" | sed -n 's/^[-*] *`\([^`]*\)`.*/\1/p')
+    paths=$(awk '/^## Code[ \t\r]*$/{on=1;next} /^## /{on=0} on' "$b" | sed -n 's/^[-*] *`\([^`]*\)`.*/\1/p')
     while IFS= read -r p; do
       [ -n "$p" ] || continue
       [ -e "$bdir/${p%/}" ] || emit brief-path-missing "$b" "$p"
