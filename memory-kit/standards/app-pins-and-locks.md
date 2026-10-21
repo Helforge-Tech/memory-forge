@@ -5,7 +5,7 @@ scope: portable
 status: active
 updated: 2026-10-21
 decision: ../../docs/decisions/0004-toolchains-nix-flake-rust-toolchain-toml.md
-check: memory-kit/checks/app-conformance.sh (rules rust-pinned, package-manager-pinned, lockfile-js, lockfile-rust, cargo-edition), run by task lint
+check: memory-kit/checks/app-conformance.sh (rules rust-pinned, package-manager-pinned, lockfile-js, lockfile-rust, cargo-edition), run by task lint (Tauri apps only; other stacks have no check yet)
 ---
 
 # An app pins its toolchains and commits its lockfiles

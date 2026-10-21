@@ -54,4 +54,4 @@ Don't: a bare rule id in a baseline, a baseline entry with no path, spaces inste
 
 ## Applied in
 
-`memory-kit/checks/app-conformance.sh` (the desktop-app kind). No `checks/` folder exists in this repo yet.
+`memory-kit/checks/app-conformance.sh` (the `desktop-app` kind, which means a Tauri app). No `checks/` folder exists in this repo yet.

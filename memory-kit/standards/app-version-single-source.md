@@ -5,7 +5,7 @@ scope: portable
 status: active
 updated: 2026-10-21
 decision: none
-check: memory-kit/checks/app-conformance.sh (rule version-single-source), run by task lint
+check: memory-kit/checks/app-conformance.sh (rule version-single-source), run by task lint (Tauri apps only; other stacks have no check yet)
 ---
 
 # An app's version is defined in one place
@@ -24,7 +24,7 @@ For a Tauri app (the stack of [desktop-app-setup](../playbooks/desktop-app-setup
 ## Why
 
 - Two copies drift, and the UI then shows a version the build did not ship.
-- Reading it over IPC also exercises the UI to native bridge from the first slice.
+- For Tauri, reading it over IPC also exercises the UI to native bridge from the first slice.
 
 ## Do / Don't
 

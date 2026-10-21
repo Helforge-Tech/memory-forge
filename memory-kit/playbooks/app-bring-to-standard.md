@@ -1,7 +1,7 @@
 ---
 title: Bring an existing app up to standard
 status: active
-updated: 2026-10-15
+updated: 2026-10-21
 ---
 
 # Bring an existing app up to standard

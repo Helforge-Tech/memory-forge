@@ -17,7 +17,7 @@ check: task budget (size-budget.sh); task budget:web in CI; release-profile rule
 3. **A budget is only raised in a PR that says why.** A budget is a ceiling, so the direction that needs a reason is up.
 4. **Anything cheap to build is checked in CI.** An artifact CI does not build is checked by a local command that builds it (`task budget`); the budget file and the command are the same either way.
 5. **The release profile keeps the size and speed settings** the generator ships (for Rust: LTO, one codegen unit, `panic = "abort"`, `strip = true`; the conformance check enforces them for Rust apps).
-6. **Start-up time and idle memory are not budgeted yet.** They need a running window to measure, and a skeleton app has nothing to measure. Add them when a feature makes them matter, as a measured budget like the others.
+6. **Start-up time and idle memory are not budgeted yet.** They need a running app to measure, and a skeleton app has nothing to measure. Add them when a feature makes them matter, as a measured budget like the others.
 
 ## Why
 

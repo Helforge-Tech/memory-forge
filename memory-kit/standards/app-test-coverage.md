@@ -23,7 +23,7 @@ check: task coverage (run by CI); reviewer for lowered thresholds
 
 - A gate added at the start costs nothing; added later it needs a migration and an argument about the number.
 - Thresholds that only go up turn "test what you add" from advice into a check.
-- A low native number is honest about code that cannot be unit tested, such as the function that starts the app. That is a fact to keep visible, not hide.
+- A low number in one layer is honest about code that cannot be unit tested, such as the function that starts the app. That is a fact to keep visible, not hide.
 
 ## Do / Don't
 

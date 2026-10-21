@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Checks every desktop app against the app-pins-and-locks, app-version-single-source and
+# Checks every Tauri desktop app (the stack of playbook desktop-app-setup) against the app-pins-and-locks, app-version-single-source and
 # app-performance-budgets (release profile) standards.
 #
 # Usage: app-conformance.sh [--list-violations]
 #
 # Requires bash 3.2 or newer; tested under 3.2 and a current bash.
 #
-# The apps are the instances of the `desktop-app` kind in checks/kinds
+# The apps are the instances of the `desktop-app` kind in checks/kinds (a Tauri app:
+# marker `src-tauri`; an app on another stack needs its own check and kind)
 # (standard checks-baseline-and-kinds). Violations are `rule<TAB>path` lines compared to
 # checks/baselines/app-conformance by baseline.sh: a new violation fails, a listed one
 # passes, a listed one that now passes fails until removed. A one-line description of
