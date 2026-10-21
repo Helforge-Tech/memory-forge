@@ -68,4 +68,4 @@ This repo: `.github/workflows/gate.yml` runs `task test`, `task memory`, `task s
 
 On 2026-10-21: locally, an unresolved base exits 2, an empty range warns, and with `CI` set it fails, and a commit with a fake key in a scratch clone fails the scan. In CI on a PR (#49), `github.event.pull_request.base.sha` resolved after `fetch-depth: 0` and the scan covered the PR's commits.
 
-On the push to `main` after #49 and #50 merged as one stack, `github.event.before` resolved. The split step failed on that push, since both layers landed together; hence the `if` on that step. Not verified: the secret scan on a push to `main` (the split step failed first).
+On the push to `main` after #49 and #50 merged as one stack, `github.event.before` resolved. The split step failed on that push, since both layers landed together; hence the `if` on that step. On the push after #55 merged, the split step was skipped and `task secrets` ran on the push's commits and passed. The `gate` check is required in the "Protect Main" ruleset (read from the ruleset).
