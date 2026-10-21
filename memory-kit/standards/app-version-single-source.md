@@ -3,7 +3,7 @@ title: An app's version is defined in one place
 kind: app
 scope: portable
 status: active
-updated: 2026-10-15
+updated: 2026-10-21
 decision: none
 check: memory-kit/checks/app-conformance.sh (rule version-single-source), run by task lint
 ---
@@ -12,9 +12,14 @@ check: memory-kit/checks/app-conformance.sh (rule version-single-source), run by
 
 ## Rule
 
-1. **The version of a Tauri app is the `version` in `Cargo.toml`.** `tauri.conf.json` has no `version`; Tauri then uses Cargo's value.
-2. **Everything that shows the version reads it from the native side** (a command that returns `CARGO_PKG_VERSION`), never from a second copy in the UI.
-3. **A private `package.json` version is not a source** and is not displayed. Do not keep it in step by hand.
+1. **An app's version has one source,** a single file or field, and every other place that needs it reads it from there or is generated from it.
+2. **Anything that shows the version reads it from that source,** never from a second copy.
+
+For a Tauri app (the stack of [desktop-app-setup](../playbooks/desktop-app-setup.md)):
+
+3. **The source is the `version` in `Cargo.toml`.** `tauri.conf.json` has no `version`; Tauri then uses Cargo's value.
+4. **The UI reads it from the native side** (a command that returns `CARGO_PKG_VERSION`), never from a second copy in the UI.
+5. **A private `package.json` version is not a source** and is not displayed. Do not keep it in step by hand.
 
 ## Why
 
@@ -23,9 +28,9 @@ check: memory-kit/checks/app-conformance.sh (rule version-single-source), run by
 
 ## Do / Don't
 
-Do: `env!("CARGO_PKG_VERSION")` in the command.
+Do: `env!("CARGO_PKG_VERSION")` in the command (Tauri).
 
-Don't: a `version` key in `tauri.conf.json` that must match `Cargo.toml`.
+Don't: a second `version` key that must be kept equal to the first, for example in `tauri.conf.json` next to `Cargo.toml`.
 
 ## Applied in
 
