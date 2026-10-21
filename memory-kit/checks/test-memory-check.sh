@@ -153,5 +153,13 @@ mk; brief web '- `src/` the code
 See [x](nope.md).'; agents '| `web/` | [brief](web/AGENTS.md) |'
 want "link in a brief to a missing path" "ref-missing~web/AGENTS.md~nope.md"
 
+mk; brief "my app" '- `src/` the code
+See [x](nope.md).'; agents '| `my app/` | [brief](<my app/AGENTS.md#top>) |'
+want "brief in a folder with a space: linked with a wrapped link and an anchor, and its links checked" "ref-missing~my app/AGENTS.md~nope.md"
+out=$(run); if printf '%s\n' "$out" | grep -q '^brief-unlinked'; then echo "FAIL  wrapped link with an anchor counts as linked"; fails=$((fails + 1)); else echo "ok    wrapped link with an anchor counts as linked"; fi
+
+mk; brief web '- `src/` the code'; printf '\n## Code owners\n\n- `alice`\n' >> web/AGENTS.md; git add -A; agents '| `web/` | [brief](./web/AGENTS.md) |'
+clean "a Code owners heading is not the Code section"
+
 [ "$fails" = 0 ] && echo "all memory-check tests passed" || echo "$fails failed"
 exit $((fails > 0))

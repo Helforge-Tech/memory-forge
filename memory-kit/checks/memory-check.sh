@@ -89,19 +89,21 @@ EOF
     || emit root-size AGENTS.md
 fi
 
-# --- area briefs (standard area-briefs) ----------------------------------------------------
+# --- area briefs (standard memory-area-briefs) ----------------------------------------------------
 # A brief is a tracked AGENTS.md below the root, outside dot-folders.
 briefs=$(git ls-files | grep '/AGENTS\.md$' | grep -v '^\.' || true)
 if [ -n "$briefs" ] && [ -f AGENTS.md ]; then
-  map=$(awk '/^## Repo map/{on=1;next} /^## /{on=0} on' AGENTS.md)
+  # link targets in the repo map, normalised like the link check below (<wrapped>, title, %20, anchor, ./)
+  mapped=$(awk '/^## Repo map/{on=1;next} /^## /{on=0} on' AGENTS.md | grep -o '\]([^)]*)' | sed 's/^](//; s/)$//' \
+    | sed -e 's/^<\(.*\)>.*$/\1/' -e 's/[[:space:]][[:space:]]*["'"'"'(].*$//' -e 's/#.*$//' -e 's/%20/ /g' -e 's|^\./||' || true)
   while IFS= read -r b; do
     [ -n "$b" ] || continue
-    printf '%s\n' "$map" | grep -qF -e "]($b)" -e "](./$b)" || emit brief-unlinked "$b"
+    printf '%s\n' "$mapped" | grep -qxF -- "$b" || emit brief-unlinked "$b"
     "$here/size-budget.sh" "$b" "$b" "${MEMORY_BRIEF_BUDGET:-4000}" >/dev/null 2>&1 \
       || emit brief-size "$b"
     bdir=$(dirname "$b")
     # `## Code` lists one path per bullet, first in backticks, relative to the brief's folder
-    paths=$(awk '/^## Code/{on=1;next} /^## /{on=0} on' "$b" | sed -n 's/^[-*] *`\([^`]*\)`.*/\1/p')
+    paths=$(awk '/^## Code[ \t]*$/{on=1;next} /^## /{on=0} on' "$b" | sed -n 's/^[-*] *`\([^`]*\)`.*/\1/p')
     while IFS= read -r p; do
       [ -n "$p" ] || continue
       [ -e "$bdir/${p%/}" ] || emit brief-path-missing "$b" "$p"
@@ -115,11 +117,16 @@ fi
 
 # --- links ----------------------------------------------------------------------------
 # Links inside fenced code blocks are examples and are skipped.
-files="AGENTS.md CLAUDE.md memory-kit/README.md $(printf '%s' "$briefs" | tr '\n' ' ')"
+# one file per line, so a folder name with a space survives
+files="AGENTS.md
+CLAUDE.md
+memory-kit/README.md
+$briefs"
 for f in .claude/skills/*/SKILL.md memory-kit/playbooks/*.md memory-kit/standards/*.md; do
-  files="$files $f"
+  files="$files
+$f"
 done
-for f in $files; do
+while IFS= read -r f; do
   [ -f "$f" ] || continue
   dir=$(dirname "$f")
   # Fenced blocks and inline code are examples. A link may be <wrapped>, carry a "title"
@@ -145,7 +152,9 @@ for f in $files; do
   done <<EOF
 $links
 EOF
-done
+done <<EOF
+$files
+EOF
 
 # --- kit indexes ------------------------------------------------------------------------
 for idx in memory-kit/standards/INDEX.md memory-kit/playbooks/INDEX.md; do
