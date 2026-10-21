@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Date: 2026-10-21
-- Scope: the `area-briefs` standard, the memory check, the adopt playbook
+- Scope: the `memory-area-briefs` standard, the memory check, the adopt playbook
 
 ## Context
 [#10](https://github.com/Helforge-Tech/memory-forge/issues/10). In a large monorepo a session works in one area, and the root `AGENTS.md` should stay a short map (it has a size budget, [0028](0028-memory-checks.md)). Per-area detail needs a home that a session reads only when the area is in scope.
