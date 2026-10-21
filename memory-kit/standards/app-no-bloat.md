@@ -31,7 +31,7 @@ Don't: leave a plugin "in case we need it later".
 
 ## Suggested checks (not added yet)
 
-- An unused-dependency scanner for JavaScript and one for Rust, run in `task lint`, with a baseline for existing apps ([app-bring-to-standard](../playbooks/app-bring-to-standard.md)).
+- An unused-dependency scanner for JavaScript and one for Rust (for the stacks the app uses), run in `task lint`, with a baseline for existing apps ([app-bring-to-standard](../playbooks/app-bring-to-standard.md)).
 - A script that compares the capability file's permissions with the plugins in use.
 
 ## Applied in
