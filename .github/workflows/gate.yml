@@ -23,7 +23,9 @@ jobs:
         run: nix develop -c task test
       - name: task memory
         run: nix develop -c task memory
+      # A PR rule: a stack merged together is one push, which would read as mixed (decision 0032).
       - name: task split
+        if: github.event_name == 'pull_request'
         run: nix develop -c task split
       - name: task secrets
         run: nix develop -c task secrets
