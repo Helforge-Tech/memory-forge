@@ -32,3 +32,16 @@ tasks:
     set: [pipefail]
     cmds:
       - memory-kit/checks/pr-split.sh | memory-kit/checks/baseline.sh run split
+
+  secrets:
+    desc: Scan the change's commits for secrets (base is GATE_BASE, default origin/main)
+    cmds:
+      - |
+        base=${GATE_BASE:-origin/main}
+        git rev-parse --verify -q "$base^{commit}" >/dev/null || { echo "secrets: base '$base' does not resolve (fetch it, or set GATE_BASE)" >&2; exit 2; }
+        if [ "$(git rev-list --count "$base..HEAD")" = 0 ]; then
+          echo "secrets: no commits in $base..HEAD, nothing was scanned" >&2
+          [ -z "${CI:-}" ] || exit 1
+          exit 0
+        fi
+        gitleaks git --log-opts="$base..HEAD" --redact --no-banner
