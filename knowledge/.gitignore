@@ -1,2 +1,7 @@
 # Personal notes stay on this machine. Promote one into domains/ by hand (standard memory-notes)
 personal/
+
+# Obsidian per-machine state
+.obsidian/workspace*.json
+.obsidian/cache
+.obsidian/plugins/

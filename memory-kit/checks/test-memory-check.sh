@@ -170,5 +170,11 @@ want "link in a note to a project file" "note-link-out~knowledge/domains/a/n.md~
 mk; mkdir -p knowledge/domains/a; printf '# n\n\nSee [x](m.md).\n' > knowledge/domains/a/n.md; echo m > knowledge/domains/a/m.md; git add knowledge; agents '| `knowledge/` | n |'
 clean "a note linking to another note in the vault is clean"
 
+mk; mkdir -p knowledge/domains/a knowledge/personal; printf '# n\n\nSee [x](../../personal/p.md).\n' > knowledge/domains/a/n.md; echo p > knowledge/personal/p.md; git add knowledge/domains
+want "link in a note to a personal note" "note-link-out~knowledge/domains/a/n.md~../../personal/p.md"
+
+mk; mkdir -p knowledge/domains/a; printf '# n\n\nSee [x](nope.md).\n' > "knowledge/domains/a/café.md"; git add knowledge
+want "a note with a non-ASCII name is checked" "ref-missing~knowledge/domains/a/café.md~nope.md"
+
 [ "$fails" = 0 ] && echo "all memory-check tests passed" || echo "$fails failed"
 exit $((fails > 0))
