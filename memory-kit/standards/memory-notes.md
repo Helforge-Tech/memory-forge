@@ -27,7 +27,7 @@ check: memory-check.sh rules ref-missing and note-link-out on notes, tested by t
 4. **A project note may link to a portable note. A portable note links only to portable notes** (never to project files or personal notes).
 5. **A note becomes portable only by a human.** A session that sees a candidate writes it in the handoff; the owner strips the project and personal content, moves it, adds the index row and merges it in a PR.
 6. **The vault sets Obsidian to markdown links with relative paths** (`<vault>/.obsidian/app.json`), so a new link follows rule 2 by itself.
-7. **The memory check enforces** `ref-missing` (a dead link in a tracked note) and `note-link-out` (a link that leaves the vault). Front matter and index rows are not checked; the reviewer looks. See [memory-checks](memory-checks.md).
+7. **The memory check enforces** `ref-missing` (a dead link in a tracked note) and `note-link-out` (a link that leaves the vault or points into `personal/`). Front matter and index rows are not checked; the reviewer looks. See [memory-checks](memory-checks.md).
 
 ## Why
 
