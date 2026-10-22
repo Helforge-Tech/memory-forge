@@ -161,5 +161,14 @@ out=$(run); if printf '%s\n' "$out" | grep -q '^brief-unlinked'; then echo "FAIL
 mk; brief web '- `src/` the code'; printf '\n## Code owners\n\n- `alice`\n' >> web/AGENTS.md; git add -A; agents '| `web/` | [brief](./web/AGENTS.md) |'
 clean "a Code owners heading is not the Code section"
 
+mk; mkdir -p knowledge/domains/a; printf '# n\n\nSee [x](nope.md).\n' > knowledge/domains/a/n.md; git add knowledge
+want "link in a note to a missing path" "ref-missing~knowledge/domains/a/n.md~nope.md"
+
+mk; mkdir -p knowledge/domains/a; printf '# n\n\nSee [x](../../../AGENTS.md).\n' > knowledge/domains/a/n.md; git add knowledge
+want "link in a note to a project file" "note-link-out~knowledge/domains/a/n.md~../../../AGENTS.md"
+
+mk; mkdir -p knowledge/domains/a; printf '# n\n\nSee [x](m.md).\n' > knowledge/domains/a/n.md; echo m > knowledge/domains/a/m.md; git add knowledge; agents '| `knowledge/` | n |'
+clean "a note linking to another note in the vault is clean"
+
 [ "$fails" = 0 ] && echo "all memory-check tests passed" || echo "$fails failed"
 exit $((fails > 0))
