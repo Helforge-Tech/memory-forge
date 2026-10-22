@@ -10,6 +10,7 @@
 #   ref-missing          a markdown link in root guidance, a skill, a playbook or a standard
 #                        points at a path that does not exist (key: the link)
 #   ref-archived         such a link points into a folder that holds ARCHIVED.md
+#   note-link-out        a link in a note under knowledge/ points outside knowledge/ (key: the link)
 #   command-missing      AGENTS.md names `task <name>` and the task runner has no such task
 #                        (`task --list-all`; $MEMORY_TASK_BIN names another binary; without
 #                        one, the first Taskfile.yml or Taskfile.yaml is parsed)
@@ -126,6 +127,10 @@ for f in .claude/skills/*/SKILL.md memory-kit/playbooks/*.md memory-kit/standard
   files="$files
 $f"
 done
+# notes: tracked markdown files under knowledge/ (personal notes are untracked, so not checked)
+notes=$(git ls-files 'knowledge/*.md' || true)
+files="$files
+$notes"
 while IFS= read -r f; do
   [ -f "$f" ] || continue
   dir=$(dirname "$f")
@@ -143,6 +148,10 @@ while IFS= read -r f; do
     t=$(printf '%s' "${t%%#*}" | sed 's/%20/ /g')
     [ -n "$t" ] || continue
     if [ ! -e "$dir/$t" ]; then emit ref-missing "$f" "$l"; continue; fi
+    case $f in knowledge/*)
+      if [ -d "$dir/$t" ]; then abs=$(cd "$dir/$t" && pwd -P); else abs=$(cd "$(dirname "$dir/$t")" && pwd -P); fi
+      case "$abs/" in "$(pwd -P)/knowledge/"*) ;; *) emit note-link-out "$f" "$l"; continue ;; esac ;;
+    esac
     # walk up from the target (itself, if a folder) to the repo root for an ARCHIVED.md marker
     if [ -d "$dir/$t" ]; then abs=$(cd "$dir/$t" && pwd -P); else abs=$(cd "$(dirname "$dir/$t")" && pwd -P); fi
     while [ "$abs" != "$(pwd -P)" ] && [ "$abs" != / ]; do
