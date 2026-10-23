@@ -15,10 +15,10 @@ The handoff is local and untracked (`docs/state/handoffs/` is gitignored; decisi
    - **Decided:** decisions made. Link the records in `docs/decisions/`.
    - **Open:** questions and anything waiting on the owner. Anything that will outlive this session must be a GitHub issue (create it with `gh issue create`); list its number here instead of describing it in prose, so it can be closed. Do not repeat items that earlier handoffs listed and this session resolved; say they are resolved.
    - **Next:** one recommended step and the exact prompt to start it, which should begin with `/pickup <n>`.
-   - **Gaps found:** kinds of things with no standard or playbook.
+   - **Gaps found:** only gaps the owner agreed to record (AGENTS.md rule 3), each with its `gap` issue number or the fix the owner approved. Before writing this section, list any gap the session found that the owner has not ruled on and ask, in one question, which to record; drop the rest. If there are none, write "None".
    - **Don't redo:** facts verified this session, so the next session doesn't re-check them.
    - **To promote:** text that belongs in tracked files but was not shipped in this session's PR, ready to paste. Mark it `proposed`.
-     - the exact new rows for `docs/state/gaps.md`, one per gap found
+     - the exact new rows for `docs/state/gaps.md`, one per gap the owner agreed to record
      - any proposed standard, playbook or decision record, as a list or diff. Never mark anything `active`
 3. **Upstream question.** If the repo is not the template itself (`docs/state/kit-source.md` exists, or `origin` is not the template) and the session changed the framework tier (`memory-kit/`, `.claude/`, `.githooks/`, the kit's `docs/` structure) in a way the header's `Upstream` line does not already answer, ask the owner once: submit it to the template? Record the answer in the header. On yes, follow `memory-kit/playbooks/contribute-upstream.md`. Repo-tier changes never prompt. In the template itself set `Upstream: none` and do not ask.
 4. Close out earlier notes. If this session resolved an item that an earlier handoff in `docs/state/handoffs/` lists as open or proposed (anywhere in the file, including "To promote"), edit that local note: strike the line through (`~~text~~`) and add `RESOLVED <date> (see <this note>): <how>`. These are untracked files, so no PR is needed.
