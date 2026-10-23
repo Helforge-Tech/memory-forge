@@ -1,14 +1,14 @@
 ---
-title: A large repo keeps a short brief per area, linked from the root repo map
+title: A large repo keeps a short brief per area, linked from the root repo map or its parent brief
 kind: memory
 scope: portable
 status: active
-updated: 2026-10-21
-decision: ../../docs/decisions/0034-area-briefs.md
+updated: 2026-10-23
+decision: ../../docs/decisions/0034-area-briefs.md (nested briefs: ../../docs/decisions/0039-nested-briefs-linked-from-parent-brief.md)
 check: memory-check.sh rules brief-unlinked, brief-size, brief-path-missing, tested by test-memory-check.sh in task test; task memory
 ---
 
-# A large repo keeps a short brief per area, linked from the root repo map
+# A large repo keeps a short brief per area, linked from the root repo map or its parent brief
 
 ## Rule
 
@@ -24,9 +24,14 @@ check: memory-check.sh rules brief-unlinked, brief-size, brief-path-missing, tes
    ```
    | `web/` | The web UI. [brief](web/AGENTS.md) |
    ```
-4. **A brief stays under 4000 bytes** (`MEMORY_BRIEF_BUDGET` sets another). A brief that needs more means the area should be split.
-5. **A session reads the brief of each area in scope** when it states its scope ("scope first" in `AGENTS.md`), and `/pickup <n>` reads the brief of the issue's area. It does not read the briefs of other areas.
-6. **The memory check enforces** `brief-unlinked` (a tracked `<folder>/AGENTS.md` that the repo map does not link), `brief-size` and `brief-path-missing` (a `## Code` path that does not exist), and its link check covers briefs. See [memory-checks](memory-checks.md).
+   A **nested brief** (an `AGENTS.md` one or more folders below another brief) may instead be linked from the `## Code` section of its nearest parent brief, on the bullet whose path is the nested brief's folder; the parent is then the index for its sub-areas ([0039](../../docs/decisions/0039-nested-briefs-linked-from-parent-brief.md)):
+
+   ```
+   - `api/` the API ([brief](api/AGENTS.md))
+   ```
+4. **A brief stays under 4000 bytes** (`MEMORY_BRIEF_BUDGET` sets another). A brief that needs more means the area should be split, into nested briefs if its sub-areas each have their own detail.
+5. **A session reads the brief of each area in scope**, and the nested brief of each sub-area in scope, when it states its scope ("scope first" in `AGENTS.md`), and `/pickup <n>` reads the brief of the issue's area and, if the issue names a sub-area with a nested brief, that brief too. It does not read the briefs of other areas.
+6. **The memory check enforces** `brief-unlinked` (a tracked `<folder>/AGENTS.md` that neither the repo map nor its nearest parent brief's `## Code` section links), `brief-size` and `brief-path-missing` (a `## Code` path that does not exist), and its link check covers briefs. See [memory-checks](memory-checks.md).
 
 ## Why
 

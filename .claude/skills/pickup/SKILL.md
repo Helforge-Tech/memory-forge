@@ -34,7 +34,7 @@ Get oriented. Read only what is listed below; do not explore the repo. Handoffs 
 6. `gh issue view <n>`, the issue and its last few comments.
 7. The newest `docs/state/handoffs/<n>-*.md` by modification time (`find "<each worktree>/docs/state/handoffs" -maxdepth 1 -name '<n>-*.md' -exec ls -t {} + 2>/dev/null | head -1`; `find` rather than a shell glob, with each path quoted (an unquoted path with a space silently drops that worktree), which fails in zsh when one worktree has no match). Read all of it.
 8. The thread's code state: `git branch --list "<n>-*"` and the PRs from that branch (`gh pr list --state all --json number,title,state,headRefName --jq '.[] | select(.headRefName | startswith("<n>-"))'`).
-9. If the issue's area (its `area:*` label, else the paths it names) has a brief (linked from the `AGENTS.md` repo map, standard `memory-area-briefs`), read it, and no other area's.
+9. If the issue's area (its `area:*` label, else the paths it names) has a brief (linked from the `AGENTS.md` repo map, standard `memory-area-briefs`), read it, and no other area's. If the paths it names fall in a sub-area whose nested brief that brief links under `## Code` (for example `services/api/AGENTS.md`), read that one too.
 10. Recommend the next step for that thread only. Mention another issue or PR only if it blocks this one, and only after checking its state with `gh`.
 
 ## With no argument

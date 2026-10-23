@@ -161,6 +161,31 @@ out=$(run); if printf '%s\n' "$out" | grep -q '^brief-unlinked'; then echo "FAIL
 mk; brief web '- `src/` the code'; printf '\n## Code owners\n\n- `alice`\n' >> web/AGENTS.md; git add -A; agents '| `web/` | [brief](./web/AGENTS.md) |'
 clean "a Code owners heading is not the Code section"
 
+mk; brief web/api '- `src/` the code'; brief web '- `api/` the API [brief](api/AGENTS.md)'; agents '| `web/` | [brief](web/AGENTS.md) |'
+clean "a nested brief linked from its parent brief's Code section"
+
+mk; brief web/api '- `src/` the code'; brief web '- `api/` the API'; agents '| `web/` | [brief](web/AGENTS.md) |'
+want "nested brief its parent does not link" "brief-unlinked~web/api/AGENTS.md"
+
+mk; brief web/api '- `src/` the code'; brief web '- `api/` the API'; printf '\n## Owners\n\nSee [api](api/AGENTS.md).\n' >> web/AGENTS.md; git add -A; agents '| `web/` | [brief](web/AGENTS.md) |'
+want "nested brief linked outside its parent's Code section" "brief-unlinked~web/api/AGENTS.md"
+
+mk; brief web/a/api '- `src/` the code'; brief web '- `a/api/` the a API [brief](a/api/AGENTS.md)'; agents '| `web/` | [brief](web/AGENTS.md) |'
+clean "the nearest parent brief may be more than one folder up"
+
+mk; brief web/api '- `src/` the code'; brief web '- `src/` the code [brief](api/AGENTS.md)
+- `api/` the API'; agents '| `web/` | [brief](web/AGENTS.md) |'
+want "nested brief linked on another bullet" "brief-unlinked~web/api/AGENTS.md"
+
+mk; brief web/api '- `src/` the code'; brief web '- `api/` the API `[brief](api/AGENTS.md)`'; agents '| `web/` | [brief](web/AGENTS.md) |'
+want "nested brief linked only inside inline code" "brief-unlinked~web/api/AGENTS.md"
+
+mk; brief web/api '- `src/` the code'; brief web '- `api/` the API
+```
+- `api/` [brief](api/AGENTS.md)
+```'; agents '| `web/` | [brief](web/AGENTS.md) |'
+want "nested brief linked only inside a fenced block" "brief-unlinked~web/api/AGENTS.md"
+
 mk; mkdir -p knowledge/domains/a; printf '# n\n\nSee [x](nope.md).\n' > knowledge/domains/a/n.md; git add knowledge
 want "link in a note to a missing path" "ref-missing~knowledge/domains/a/n.md~nope.md"
 

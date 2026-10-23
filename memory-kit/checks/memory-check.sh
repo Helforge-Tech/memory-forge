@@ -16,7 +16,8 @@
 #                        (`task --list-all`; $MEMORY_TASK_BIN names another binary; without
 #                        one, the first Taskfile.yml or Taskfile.yaml is parsed)
 #   root-size            AGENTS.md is over its budget ($MEMORY_ROOT_BUDGET bytes, default 16000)
-#   brief-unlinked       a tracked area brief (<folder>/AGENTS.md) is not linked from the repo map
+#   brief-unlinked       a tracked area brief (<folder>/AGENTS.md) is not linked from the repo map,
+#                        nor from the `## Code` section of its nearest parent brief
 #   brief-size           an area brief is over its budget ($MEMORY_BRIEF_BUDGET bytes, default 4000)
 #   brief-path-missing   a path in a brief's `## Code` section does not exist (key: the path)
 #   index-status         a kit index row's status differs from the item's `status:` (key: the file)
@@ -95,12 +96,36 @@ fi
 # A brief is a tracked AGENTS.md below the root, outside dot-folders.
 briefs=$(git ls-files | grep '/AGENTS\.md$' | grep -v '^\.' || true)
 if [ -n "$briefs" ] && [ -f AGENTS.md ]; then
-  # link targets in the repo map, normalised like the link check below (<wrapped>, title, %20, anchor, ./)
-  mapped=$(awk '/^## Repo map/{on=1;next} /^## /{on=0} on' AGENTS.md | grep -o '\]([^)]*)' | sed 's/^](//; s/)$//' \
-    | sed -e 's/^<\(.*\)>.*$/\1/' -e 's/[[:space:]][[:space:]]*["'"'"'(].*$//' -e 's/#.*$//' -e 's/%20/ /g' -e 's|^\./||' || true)
+  # link_targets: markdown link targets on stdin, one per line, normalised like the link check
+  # below (<wrapped>, title, %20, anchor, ./)
+  link_targets() {
+    grep -o '\]([^)]*)' | sed 's/^](//; s/)$//' \
+      | sed -e 's/^<\(.*\)>.*$/\1/' -e 's/[[:space:]][[:space:]]*["'"'"'(].*$//' -e 's/#.*$//' -e 's/%20/ /g' -e 's|^\./||' || true
+  }
+  mapped=$(awk '/^## Repo map/{on=1;next} /^## /{on=0} on' AGENTS.md | link_targets)
   while IFS= read -r b; do
     [ -n "$b" ] || continue
-    printf '%s\n' "$mapped" | grep -qxF -- "$b" || emit brief-unlinked "$b"
+    linked=0
+    printf '%s\n' "$mapped" | grep -qxF -- "$b" && linked=1
+    if [ "$linked" = 0 ]; then
+      # a nested brief may instead be linked from the `## Code` section of its nearest parent brief
+      d=$(dirname "$(dirname "$b")")
+      while [ "$d" != . ]; do
+        if printf '%s\n' "$briefs" | grep -qxF -- "$d/AGENTS.md"; then
+          rel=${b#"$d"/}; folder=$(dirname "$rel")
+          # only the `## Code` bullet whose path is the nested brief's folder, outside fences,
+          # with inline code removed
+          awk -v folder="$folder" '/^## Code[ \t\r]*$/{on=1;next} /^## /{on=0} /^[ \t]*```/{f=!f;next}
+            on && !f && match($0, /^[-*] *`[^`]*`/) {
+              p=substr($0, RSTART, RLENGTH); sub(/^[-*] *`/, "", p); sub(/`$/, "", p); sub(/^\.\//, "", p); sub(/\/$/, "", p)
+              if (p == folder) { l=substr($0, RSTART+RLENGTH); gsub(/`[^`]*`/, "", l); print l }
+            }' "$d/AGENTS.md" | link_targets | grep -qxF -- "$rel" && linked=1
+          break
+        fi
+        d=$(dirname "$d")
+      done
+    fi
+    [ "$linked" = 1 ] || emit brief-unlinked "$b"
     "$here/size-budget.sh" "$b" "$b" "${MEMORY_BRIEF_BUDGET:-4000}" >/dev/null 2>&1 \
       || emit brief-size "$b"
     bdir=$(dirname "$b")
