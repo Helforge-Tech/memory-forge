@@ -1,6 +1,6 @@
 # Gaps
 
-Kinds of things with no standard yet, and tasks with no playbook. A session that hits one stops and proposes (see AGENTS.md).
+Kinds of things with no standard yet, and tasks with no playbook. A row is added only after the owner approves it; follow-up work also has a `gap` issue, linked from the row ([gap-handling](../../memory-kit/standards/gap-handling.md)).
 
 | Gap | Found in | Status |
 |---|---|---|

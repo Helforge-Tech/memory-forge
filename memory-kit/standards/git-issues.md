@@ -26,13 +26,13 @@ check: none yet
    ```
 
    A parent issue's number never names a branch.
-8. **Log problems with these standards or playbooks as issues** (label `improvement`) before moving on: what went wrong, what the correct behaviour is, and which file needs changing. Do not wait for a perfect fix.
+8. **Log problems with these standards or playbooks as issues** (label `improvement`), once the owner agrees ([gap-handling](gap-handling.md)), before moving on: what went wrong, what the correct behaviour is, and which file needs changing. Do not wait for a perfect fix.
 
 ## Why
 
 - An issue gives a branch and a PR something to point at, and the acceptance criteria say when the work is done.
 - Search-first and epics keep the backlog from filling with duplicates and loose ends.
-- Logging gaps as they are found is how the memory improves.
+- Raising gaps as they are found, and recording the ones the owner approves, is how the memory improves.
 
 ## Do / Don't
 
