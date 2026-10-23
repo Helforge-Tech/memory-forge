@@ -26,7 +26,7 @@ check: none yet
    ```
 
    A parent issue's number never names a branch.
-8. **Log problems with these standards or playbooks as issues** (label `improvement`), once the owner agrees ([gap-handling](gap-handling.md)), before moving on: what went wrong, what the correct behaviour is, and which file needs changing. Do not wait for a perfect fix.
+8. **Log problems with these standards or playbooks as issues** (label `improvement`), once the owner agrees ([memory-gap-handling](memory-gap-handling.md)), before moving on: what went wrong, what the correct behaviour is, and which file needs changing. Do not wait for a perfect fix.
 
 ## Why
 

@@ -1,6 +1,6 @@
 # 0037: Gaps are sorted when found and recorded only with the owner's approval
 
-- Status: accepted
+- Status: accepted; amended by [0038](0038-gap-standard-renamed-and-settled-gaps-need-no-row.md) (standard renamed to `memory-gap-handling`; gaps settled in the same turn need no row)
 - Date: 2026-10-22
 - Scope: AGENTS.md session rule 3, the handoff skill, `docs/state/gaps.md`, the kit rules that log or record gaps
 

@@ -22,6 +22,6 @@ What outputs must satisfy. Standards are added the first time a task introduces 
 | checks | [Checks tolerate existing violations through a baseline and find their targets through a kinds map](checks-baseline-and-kinds.md) | `test-baseline.sh`, in `task test` | portable | active |
 | memory | [Memory has checks that run like code checks](memory-checks.md) | `test-memory-check.sh`, in `task test`; `task memory` | portable | active |
 | memory | [A large repo keeps a short brief per area, linked from the root repo map](memory-area-briefs.md) | `memory-check.sh` rules `brief-*`, in `task test` and `task memory` | portable | active |
-| memory | [Gaps are sorted when found and recorded only with the owner's approval](gap-handling.md) | reviewer | portable | active |
+| memory | [Gaps are sorted when found and recorded only with the owner's approval](memory-gap-handling.md) | reviewer | portable | active |
 | memory | [Notes have a small fixed format, link with relative markdown links, and live by who owns them](memory-notes.md) | `memory-check.sh` rules `ref-missing`, `note-link-out`, in `task test` and `task memory` | portable | active |
 | ci | [Every repo gates pull requests with one required CI job that calls the repo's own commands](ci-pr-gate.md) | reviewer | portable | active |

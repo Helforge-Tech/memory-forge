@@ -4,7 +4,7 @@ kind: memory
 scope: portable
 status: active
 updated: 2026-10-22
-decision: ../../docs/decisions/0037-gaps-sorted-when-found-and-owner-approved.md
+decision: ../../docs/decisions/0038-gap-standard-renamed-and-settled-gaps-need-no-row.md
 check: reviewer
 ---
 
@@ -20,7 +20,7 @@ A **gap** is something nothing in the repo or kit tier covers: a missing standar
    - *Follow-up work:* propose a GitHub issue, and file it once the owner agrees.
 2. **Every reply that finds one ends with a Gaps block:** each gap, its kind, and what happened (asked, approved fix, proposed issue). Batch the questions into one prompt per turn.
 3. **Nothing is written anywhere as a gap or an improvement** (`docs/state/gaps.md`, a handoff note, an issue) until the owner agrees it should be. Unapproved gaps are dropped, not parked.
-4. **An approved gap gets a row in `docs/state/gaps.md`;** if it is follow-up work, it also gets an issue labelled `gap`, and the row links it. `gaps.md` stays the list that [roll-out-a-standard](../playbooks/roll-out-a-standard.md) ranks from. An approved improvement gets an issue labelled `improvement`.
+4. **A gap settled in the same turn needs no row:** an approved fix that is applied, or the owner's decision recorded in `docs/decisions/`, is its own record. **A gap left open gets a row in `docs/state/gaps.md`** once the owner approves recording it; if it is follow-up work, it also gets an issue labelled `gap`, and the row links it. `gaps.md` stays the list that [roll-out-a-standard](../playbooks/roll-out-a-standard.md) ranks from. An approved improvement gets an issue labelled `improvement`.
 5. **Where a playbook says to log or record a gap,** this rule applies: ask first, then record as above. During an adoption survey, the owner approving the survey's rows before its PR merges is the approval.
 
 ## Why
@@ -36,4 +36,4 @@ Don't: add a row to `gaps.md` or a gap to a handoff without asking, or mention a
 
 ## Applied in
 
-`AGENTS.md` session rule 3; the handoff skill's "Gaps found" section. See [0037](../../docs/decisions/0037-gaps-sorted-when-found-and-owner-approved.md).
+`AGENTS.md` session rule 3; the handoff skill's "Gaps found" section. See [0037](../../docs/decisions/0037-gaps-sorted-when-found-and-owner-approved.md) and [0038](../../docs/decisions/0038-gap-standard-renamed-and-settled-gaps-need-no-row.md).
