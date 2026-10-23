@@ -8,7 +8,7 @@ Questions are about this repo's current state. When the state changes, update th
 
 | # | Question | Key (required parts in bold) |
 |---|---|---|
-| 1 | I need a new kind of thing, say a settings page. What do I check first, and what if nothing covers it? | **Look in `memory-kit/standards/INDEX.md` and `memory-kit/playbooks/INDEX.md`**; if there is none, **stop** and give 2 to 3 options, a recommendation and the strongest objection; the human decides; record it (decision and gap). |
+| 1 | I need a new kind of thing, say a settings page. What do I check first, and what if nothing covers it? | **Look in `memory-kit/standards/INDEX.md` and `memory-kit/playbooks/INDEX.md`**; if there is none, **stop** and give 2 to 3 options, a recommendation and the strongest objection; the human decides, and **the decision goes in `docs/decisions/`**; **nothing is recorded as a gap until the owner agrees** (standard `memory-gap-handling`). |
 | 2 | How do I ship a change? | Work from an **issue**; branch `<issue#>-<summary>`; **never commit on `main`**; Conventional Commits; open a **PR** with `Closes #n`; a **human merges**. Playbook `git-ship-a-change`. |
 | 3 | Which model should a research subagent use? | A **cheap model (Haiku; Sonnet only if needed)**; heavy models are for guidance; always set the model on spawn (standard `agents-model-by-role`, decision 0017). |
 | 4 | How do I set up a brand-new desktop app? | Follow the **`desktop-app-setup` playbook**; there is **no setup command** and no template (decision 0020). |
