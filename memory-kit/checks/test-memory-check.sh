@@ -129,6 +129,14 @@ want "plans index row to a missing plan" "ref-missing~docs/plans/INDEX.md~gone/p
 mk; mkdir -p docs/plans/a; echo x > docs/plans/a/plan.md; git add docs/plans
 clean "plan folders without a plans index are not checked"
 
+mk; mkdir -p docs/plans/a; echo x > docs/plans/a/plan.md; echo x > docs/plans/flat.md
+printf '| Plan | Status |\n|---|---|\n| [A](a/plan.md) | done |\n' > docs/plans/INDEX.md; git add docs/plans
+want "flat plan file with no index row" "plan-row-missing~docs/plans/INDEX.md~flat.md"
+
+mk; mkdir -p docs/plans/a "docs/plans/b c"; echo x > docs/plans/a/plan.md; echo x > "docs/plans/b c/plan.md"
+printf '| Plan | Status |\n|---|---|\n| [A](./a/plan.md) | done |\n| [B](b%%20c/plan.md) | done |\n' > docs/plans/INDEX.md; git add docs/plans
+clean "index rows written ./slug/ or %20-encoded count"
+
 mk; mkdir checks; printf 'app\tapps/*\n' > checks/kinds
 want "kind with no instance" "kinds-map-invalid~checks/kinds~app"
 

@@ -23,7 +23,7 @@ check: memory-kit/checks/test-memory-check.sh, run by task test; task memory run
    - `decision-number-duplicate`: no two decisions share a number.
    - `root-size`: `AGENTS.md` stays under 16000 bytes (`MEMORY_ROOT_BUDGET` sets another budget).
    - `index-status` and `index-row-missing`: each kit standard and playbook has a row in its `INDEX.md`, and the row's status matches the item's `status:`.
-   - `plan-row-missing`: when `docs/plans/INDEX.md` exists, every tracked plan folder `docs/plans/<slug>/` has a row linking into it. The index is also covered by `ref-missing`, so a row for a moved or deleted plan fails.
+   - `plan-row-missing`: when `docs/plans/INDEX.md` exists, every tracked plan folder `docs/plans/<slug>/`, and any file directly in `docs/plans/`, has a row linking to it (`slug/…`, `./slug/…` or %20-encoded). The index is also covered by `ref-missing`, so a row for a moved or deleted plan fails.
    - `brief-unlinked`, `brief-size` and `brief-path-missing`: area briefs follow [memory-area-briefs](memory-area-briefs.md). Briefs are also covered by `ref-missing`.
    - `kinds-map-invalid`: `checks/kinds`, if present, parses and every kind has an instance.
    - `decision-edited`: a decision differs from the merge base with `origin/main` only in its `- Status:` line, and none is deleted. With `CI` or `MEMORY_REQUIRE_BASE` set, a missing base or merge base (a shallow clone) is the violation `decision-base-missing`, not a skip: fetch full history in CI.

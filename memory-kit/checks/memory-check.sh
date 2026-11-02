@@ -22,8 +22,9 @@
 #   brief-path-missing   a path in a brief's `## Code` section does not exist (key: the path)
 #   index-status         a kit index row's status differs from the item's `status:` (key: the file)
 #   index-row-missing    a kit item has no row in its INDEX.md (key: the file)
-#   plan-row-missing     docs/plans/INDEX.md exists and a tracked plan folder docs/plans/<slug>/
-#                        has no row linking into it (key: the slug)
+#   plan-row-missing     docs/plans/INDEX.md exists and a tracked plan folder docs/plans/<slug>/,
+#                        or a file directly in docs/plans/, has no row linking to it (key: the
+#                        slug or file name)
 #   kinds-map-invalid    checks/kinds is malformed or has a kind with no instance (key: the kind)
 #   decision-base-missing  no base ref or merge base, and $CI or $MEMORY_REQUIRE_BASE is set
 #                        (otherwise the decisions check is skipped with a note)
@@ -212,14 +213,21 @@ for idx in memory-kit/standards/INDEX.md memory-kit/playbooks/INDEX.md; do
 done
 
 # --- plans index ------------------------------------------------------------------------
+# A plan is a folder docs/plans/<slug>/; a file directly in docs/plans/ is checked too, so a
+# flat plan cannot hide from the index. A row may link `slug/...`, `./slug/...` or %20-encoded.
 if [ -f docs/plans/INDEX.md ]; then
   rows=$(grep '^|.*](' docs/plans/INDEX.md || true)
-  slugs=$(git -c core.quotePath=false ls-files 'docs/plans/*/*' | awk -F/ '{ print $3 }' | sort -u)
-  while IFS= read -r s; do
-    [ -n "$s" ] || continue
-    printf '%s\n' "$rows" | grep -qF "](${s}/" || emit plan-row-missing docs/plans/INDEX.md "$s"
+  plans=$(git -c core.quotePath=false ls-files 'docs/plans/*' \
+    | awk -F/ '$3 != "INDEX.md" { print (NF > 3) ? $3 "/" : $3 }' | sort -u)
+  while IFS= read -r p; do
+    [ -n "$p" ] || continue
+    enc=$(printf '%s' "$p" | sed 's/ /%20/g')
+    case $rows in
+      *"](${p}"*|*"](./${p}"*|*"](${enc}"*|*"](./${enc}"*) ;;
+      *) emit plan-row-missing docs/plans/INDEX.md "${p%/}" ;;
+    esac
   done <<EOF
-$slugs
+$plans
 EOF
 fi
 
