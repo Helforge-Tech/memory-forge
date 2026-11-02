@@ -22,6 +22,8 @@
 #   brief-path-missing   a path in a brief's `## Code` section does not exist (key: the path)
 #   index-status         a kit index row's status differs from the item's `status:` (key: the file)
 #   index-row-missing    a kit item has no row in its INDEX.md (key: the file)
+#   plan-row-missing     docs/plans/INDEX.md exists and a tracked plan folder docs/plans/<slug>/
+#                        has no row linking into it (key: the slug)
 #   kinds-map-invalid    checks/kinds is malformed or has a kind with no instance (key: the kind)
 #   decision-base-missing  no base ref or merge base, and $CI or $MEMORY_REQUIRE_BASE is set
 #                        (otherwise the decisions check is skipped with a note)
@@ -148,6 +150,7 @@ fi
 files="AGENTS.md
 CLAUDE.md
 memory-kit/README.md
+docs/plans/INDEX.md
 $briefs"
 for f in .claude/skills/*/SKILL.md memory-kit/playbooks/*.md memory-kit/standards/*.md; do
   files="$files
@@ -207,6 +210,18 @@ for idx in memory-kit/standards/INDEX.md memory-kit/playbooks/INDEX.md; do
     [ "$have" = "$want" ] || emit index-status "$idx" "$b"
   done
 done
+
+# --- plans index ------------------------------------------------------------------------
+if [ -f docs/plans/INDEX.md ]; then
+  rows=$(grep '^|.*](' docs/plans/INDEX.md || true)
+  slugs=$(git -c core.quotePath=false ls-files 'docs/plans/*/*' | awk -F/ '{ print $3 }' | sort -u)
+  while IFS= read -r s; do
+    [ -n "$s" ] || continue
+    printf '%s\n' "$rows" | grep -qF "](${s}/" || emit plan-row-missing docs/plans/INDEX.md "$s"
+  done <<EOF
+$slugs
+EOF
+fi
 
 # --- kinds map --------------------------------------------------------------------------
 if [ -f checks/kinds ]; then
