@@ -1,6 +1,6 @@
 # 0038: The gap standard is named memory-gap-handling, and gaps settled in the same turn need no row
 
-- Status: accepted
+- Status: accepted; the sorting kinds and the `gap` issue for follow-up work are superseded by [0040](0040-open-points-settled-in-session-follow-ups-by-owner-decision.md), the name and the no-row rule stand
 - Date: 2026-10-22
 - Scope: `memory-kit/standards/memory-gap-handling.md`, AGENTS.md session rule 3, the acceptance test
 

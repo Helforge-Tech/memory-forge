@@ -1,6 +1,6 @@
 # Gaps
 
-Kinds of things with no standard yet, and tasks with no playbook. A row is added only after the owner approves it; follow-up work also has a `gap` issue, linked from the row ([memory-gap-handling](../../memory-kit/standards/memory-gap-handling.md)).
+Memory that covers nothing yet: kinds of things with no standard, tasks with no playbook, rules with no check. A row is added only after the owner approves it; a gap that is work also has a `gap` issue, linked from the row. Work the owner decided to do later is a **follow-up** (an issue labelled `follow-up`), not a gap, and is not listed here ([memory-open-points](../../memory-kit/standards/memory-open-points.md)).
 
 | Gap | Found in | Status |
 |---|---|---|
