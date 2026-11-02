@@ -21,7 +21,7 @@ A session never decides that something is for later. Anything unsettled it finds
 
 The reply block is **Open points**, not "Gaps". The ask-first rule, the no-row rule for same-turn fixes, and the `gaps.md` list that `roll-out-a-standard` ranks from all stand. The standard is renamed `memory-open-points`, since its subject is no longer gaps, and every link to it uses that name. The handoff skill's "Gaps found" section becomes "Gaps" (true gaps only); unsettled points go under "Open" as questions, and follow-ups appear there by issue number.
 
-**Labels.** A `follow-up` label is added next to `gap` and `improvement`. `gap` is narrowed to missing memory coverage; a project taking this in relabels its work-type `gap` issues `follow-up` and moves agreed-work rows out of `gaps.md` to their issues.
+**Labels.** `follow-up` joins `gap` and `improvement` as a label a project creates the first time it is needed ([git-issues](../../memory-kit/standards/git-issues.md) rule 4). `gap` is narrowed to missing memory coverage; a project taking this in relabels its work-type `gap` issues `follow-up` and moves agreed-work rows out of `gaps.md` to their issues.
 
 ## Alternatives
 

@@ -8,7 +8,7 @@ decision: ../../docs/decisions/0040-open-points-settled-in-session-follow-ups-by
 check: reviewer
 ---
 
-# Unsettled items are open points, raised and settled in the session
+# Unsettled items are open points, raised and settled in the session; only the owner makes one a follow-up
 
 ## Rule
 
