@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Close a session. Writes a local handoff note for the session's issue, holding gap edits and proposed memory changes for review. Use at the end of a work session, before clearing or closing it.
+description: Close a session. Writes a local handoff note for the session's issue, holding open points, approved gap rows and proposed memory changes for review. Use at the end of a work session, before clearing or closing it.
 disable-model-invocation: true
 ---
 
@@ -13,12 +13,12 @@ The handoff is local and untracked (`docs/state/handoffs/` is gitignored; decisi
    - **Header:** `Issue: #<n>`, `Branch: <name or none>`, `PR: #<n> or none`, `Date: <YYYY-MM-DD>`, and `Upstream: yes / no / later / none` (below).
    - **Done:** what changed, with paths.
    - **Decided:** decisions made. Link the records in `docs/decisions/`.
-   - **Open:** questions and anything waiting on the owner. Anything that will outlive this session must be a GitHub issue (create it with `gh issue create`); list its number here instead of describing it in prose, so it can be closed. Do not repeat items that earlier handoffs listed and this session resolved; say they are resolved.
+   - **Open:** questions and anything waiting on the owner, including every open point the session raised that the owner has not yet ruled on, each as the question it needs answered ([memory-open-points](../../../memory-kit/standards/memory-open-points.md)). Work the owner decided to do later is a follow-up and must be a GitHub issue labelled `follow-up` (create it with `gh issue create`); list its number here instead of describing it in prose, so it can be closed. Do not repeat items that earlier handoffs listed and this session resolved; say they are resolved.
    - **Next:** one recommended step and the exact prompt to start it, which should begin with `/pickup <n>`.
-   - **Gaps found:** only gaps the owner agreed to record (AGENTS.md rule 3), each with its `gap` issue number or the fix the owner approved. Before writing this section, list any gap the session found that the owner has not ruled on and ask, in one question, which to record; drop the rest. If there are none, write "None".
+   - **Gaps:** only memory the session found covers nothing (a missing standard, playbook or check) and the owner agreed to record (AGENTS.md rule 3), each with its `gap` issue number or the fix the owner approved. Agreed later work is a follow-up and belongs under **Open** by issue number, not here. A gap the owner has not ruled on goes under **Open** as a question. If there are none, write "None".
    - **Don't redo:** facts verified this session, so the next session doesn't re-check them.
    - **To promote:** text that belongs in tracked files but was not shipped in this session's PR, ready to paste. Mark it `proposed`.
-     - the exact new rows for `docs/state/gaps.md`, one per gap the owner agreed to record
+     - the exact new rows for `docs/state/gaps.md`, one per gap the owner agreed to record (never a follow-up; those are issues)
      - any proposed standard, playbook or decision record, as a list or diff. Never mark anything `active`
 3. **Upstream question.** If the repo is not the template itself (`docs/state/kit-source.md` exists, or `origin` is not the template) and the session changed the framework tier (`memory-kit/`, `.claude/`, `.githooks/`, the kit's `docs/` structure) in a way the header's `Upstream` line does not already answer, ask the owner once: submit it to the template? Record the answer in the header. On yes, follow `memory-kit/playbooks/contribute-upstream.md`. Repo-tier changes never prompt. In the template itself set `Upstream: none` and do not ask.
 4. Close out earlier notes. If this session resolved an item that an earlier handoff in `docs/state/handoffs/` lists as open or proposed (anywhere in the file, including "To promote"), edit that local note: strike the line through (`~~text~~`) and add `RESOLVED <date> (see <this note>): <how>`. These are untracked files, so no PR is needed.
