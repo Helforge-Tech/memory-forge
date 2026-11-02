@@ -118,6 +118,17 @@ want "index row status differs from the item" "index-status~memory-kit/standards
 mk; printf -- '---\nstatus: active\n---\n' > memory-kit/standards/b.md
 want "kit item with no index row" "index-row-missing~memory-kit/standards/INDEX.md~b.md"
 
+mk; mkdir -p docs/plans/a docs/plans/b; echo x > docs/plans/a/plan.md; echo x > docs/plans/b/plan.md
+printf '| Plan | Status |\n|---|---|\n| [A](a/plan.md) | done |\n' > docs/plans/INDEX.md; git add docs/plans
+want "plan folder with no index row" "plan-row-missing~docs/plans/INDEX.md~b"
+
+mk; mkdir -p docs/plans/a; echo x > docs/plans/a/plan.md
+printf '| Plan | Status |\n|---|---|\n| [A](a/plan.md) | done |\n| [Gone](gone/plan.md) | done |\n' > docs/plans/INDEX.md; git add docs/plans
+want "plans index row to a missing plan" "ref-missing~docs/plans/INDEX.md~gone/plan.md"
+
+mk; mkdir -p docs/plans/a; echo x > docs/plans/a/plan.md; git add docs/plans
+clean "plan folders without a plans index are not checked"
+
 mk; mkdir checks; printf 'app\tapps/*\n' > checks/kinds
 want "kind with no instance" "kinds-map-invalid~checks/kinds~app"
 

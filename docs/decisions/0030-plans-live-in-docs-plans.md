@@ -1,6 +1,6 @@
 # 0030: Plans for larger work live in `docs/plans/`, one set of files per issue
 
-- Status: accepted
+- Status: superseded by [0040](0040-plans-are-folders-with-an-index.md)
 - Date: 2026-10-20
 - Scope: where plans are saved; the `plan-a-piece-of-work` playbook
 

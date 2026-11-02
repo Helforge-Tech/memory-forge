@@ -1,7 +1,7 @@
 ---
 title: Plan a piece of work before building it
 status: active
-updated: 2026-10-20
+updated: 2026-11-02
 ---
 
 # Plan a piece of work before building it
@@ -17,7 +17,7 @@ The work spans several files, areas or sessions, or changes something other code
 3. **Scan the blast radius.** Search (Grep, not memory) for every caller, consumer, config and doc that mentions what will change, across areas. List what you found and what you checked.
 4. **Triage the problems.** For each candidate problem, show it is real (a command, a file, a failing case) and that it matters (who is hurt, how often). Drop the ones that fail either test and say so in the plan; do not plan a fix for something unproven.
 5. **Ask and propose in one round-trip.** Send the owner the open questions together with the proposed approach: 2 to 3 options, a recommendation and the strongest objection for each real choice. A decision that is the owner's, and that the repo cannot answer, is the only reason to ask.
-6. **Write the plan** from a [template](../templates/INDEX.md) and save it in `docs/plans/` ([0030](../../docs/decisions/0030-plans-live-in-docs-plans.md)): `<issue#>-<short-summary>.md`, or for multi-phase work the summary under that name plus `<issue#>-<short-summary>-phase-<n>.md` per phase. Give it `status` (`draft`, `accepted`, `done` or `dropped`) and `updated` in its header. Every claim is checked against the repo, or marked `(unverified)`. Each step says how to tell it worked.
+6. **Write the plan** from a [template](../templates/INDEX.md) in its own folder, `docs/plans/<slug>/` ([0040](../../docs/decisions/0040-plans-are-folders-with-an-index.md)): `plan.md` for a single issue, or `summary.md` (what, why, scope, non-goals, a few sentences per phase) plus `detail.md` (the spec per phase) for multi-phase work. Supporting files (a baseline, a runbook) sit in the same folder. Give the main file `status` (`draft`, `accepted`, `done` or `dropped`) and `updated` in its header. Add a row to `docs/plans/INDEX.md` (create it if absent, with columns Plan, What, Issue, Status) linking into the folder, with the same status; `task memory` fails a plan folder without a row. Every claim is checked against the repo, or marked `(unverified)`. Each step says how to tell it worked.
 7. **Record the architecturally significant choices** in `docs/decisions/` from the [decision template](../../docs/decisions/0000-template.md), and link them from the plan.
 8. **Review before accepting.** Run the `reviewer` agent in plan mode on the plan file (a subagent cannot start another, so the main session runs it). Fix blocking findings and re-run. Then the owner accepts the plan in conversation and the session sets `status: accepted`; the owner never edits the header.
 9. **Ship the plan in its own PR,** before any code, so the plan can be reviewed and merged without code in it (a PR that mixes a plan and code is hard to review).
@@ -30,7 +30,7 @@ The work spans several files, areas or sessions, or changes something other code
 
 ## Done when
 
-- The plan exists in `docs/plans/` with a status and a date, from a template.
+- The plan exists in `docs/plans/<slug>/` with a status and a date, from a template, and has a row in `docs/plans/INDEX.md`.
 - It states non-goals, the blast-radius scan and the triage result, and marks every unchecked claim.
 - The `reviewer` agent ran on it with no blocking findings left.
 - The owner has accepted it, and significant choices have a decision record.
