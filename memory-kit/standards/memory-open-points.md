@@ -4,7 +4,7 @@ kind: memory
 scope: portable
 status: active
 updated: 2026-11-02
-decision: ../../docs/decisions/0040-open-points-settled-in-session-follow-ups-by-owner-decision.md
+decision: ../../docs/decisions/0041-open-points-settled-in-session-follow-ups-by-owner-decision.md
 check: reviewer
 ---
 
@@ -58,4 +58,4 @@ Don't: add a row to `gaps.md` or a gap to a handoff without asking, or mention a
 
 ## Applied in
 
-`AGENTS.md` session rule 3; the handoff skill's **Open** and **Gaps** sections; `docs/state/gaps.md`. Replaces `memory-gap-handling` ([0037](../../docs/decisions/0037-gaps-sorted-when-found-and-owner-approved.md), [0038](../../docs/decisions/0038-gap-standard-renamed-and-settled-gaps-need-no-row.md)); see [0040](../../docs/decisions/0040-open-points-settled-in-session-follow-ups-by-owner-decision.md).
+`AGENTS.md` session rule 3; the handoff skill's **Open** and **Gaps** sections; `docs/state/gaps.md`. Replaces `memory-gap-handling` ([0037](../../docs/decisions/0037-gaps-sorted-when-found-and-owner-approved.md), [0038](../../docs/decisions/0038-gap-standard-renamed-and-settled-gaps-need-no-row.md)); see [0041](../../docs/decisions/0041-open-points-settled-in-session-follow-ups-by-owner-decision.md).

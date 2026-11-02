@@ -1,4 +1,4 @@
-# 0040: Unsettled items are open points settled in the session; only the owner makes something a follow-up
+# 0041: Unsettled items are open points settled in the session; only the owner makes something a follow-up
 
 - Status: accepted
 - Date: 2026-11-02
