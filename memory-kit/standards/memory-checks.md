@@ -26,7 +26,7 @@ check: memory-kit/checks/test-memory-check.sh, run by task test; task memory run
    - `plan-row-missing`: when `docs/plans/INDEX.md` exists, every tracked plan folder `docs/plans/<slug>/`, and any file directly in `docs/plans/`, has a row linking to it (`slug/…`, `./slug/…` or %20-encoded). The index is also covered by `ref-missing`, so a row for a moved or deleted plan fails.
    - `brief-unlinked`, `brief-size` and `brief-path-missing`: area briefs follow [memory-area-briefs](memory-area-briefs.md). Briefs are also covered by `ref-missing`.
    - `kinds-map-invalid`: `checks/kinds`, if present, parses and every kind has an instance.
-   - `decision-edited`: a decision differs from the merge base with `origin/main` only in its `- Status:` line, and none is deleted. With `CI` or `MEMORY_REQUIRE_BASE` set, a missing base or merge base (a shallow clone) is the violation `decision-base-missing`, not a skip: fetch full history in CI.
+   - `decision-edited`: a decision differs from the merge base with `origin/main` only in its `- Status:` line, and none is deleted. A decision renumbered (same slug, same text but for the number in its title) is not an edit. With `CI` or `MEMORY_REQUIRE_BASE` set, a missing base or merge base (a shallow clone) is the violation `decision-base-missing`, not a skip: fetch full history in CI.
 3. **Existing violations go in the baseline** (`checks/baselines/memory`) when the check is introduced, and the count only goes down. A permanent exception needs a reason (`checks/exceptions/memory`).
 4. **A new rule ships with a test** in `memory-kit/checks/test-memory-check.sh` that makes it fire.
 
