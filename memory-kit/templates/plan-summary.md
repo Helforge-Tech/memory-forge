@@ -1,13 +1,13 @@
 ---
 title: <what is being planned>
 issue: <#n>
-status: draft
+status: accepted
 updated: YYYY-MM-DD
 ---
 
 # Plan: <title>
 
-Summary for multi-phase work. Blast radius and non-goals are stated here once, for all phases. Details live in one `plan-phase.md` copy per phase, saved next to this file as `<issue#>-<summary>-phase-<n>.md`.
+Summary for multi-phase work. Blast radius and non-goals are stated here once, for all phases. Details live in `detail.md` next to this file, one section per phase, written from `plan-phase.md`.
 
 ## Goal
 What is true when all phases are done.
@@ -35,7 +35,7 @@ What was searched and what depends on the change.
 ## Phases
 | # | Phase | Depends on | Status | Detail |
 |---|---|---|---|---|
-| 1 | | none | draft | [phase 1](<file>) |
+| 1 | | none | accepted | [phase 1](detail.md#phase-1-name) |
 
 ## Open questions for the owner
 

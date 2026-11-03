@@ -1,13 +1,13 @@
 ---
 title: <what is being planned>
 issue: <#n>
-status: draft
+status: accepted
 updated: YYYY-MM-DD
 ---
 
 # Plan: <title>
 
-Single plan for one-off work. For several phases use `plan-summary.md` and one `plan-phase.md` per phase.
+Single plan for one-off work. For several phases use `plan-summary.md`, and write the phase details in `detail.md` from `plan-phase.md`.
 
 ## Goal
 One or two sentences: what is true when this is done.

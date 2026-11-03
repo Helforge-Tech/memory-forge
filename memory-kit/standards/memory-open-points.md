@@ -21,7 +21,7 @@ check: reviewer
    | **Follow-up** | Work the owner decided, after the discussion, should be done but not now | An issue labelled `follow-up`, filed in the same turn |
    | **Gap** | Memory that covers nothing for this: a missing standard, playbook, check or rule | Raise it as an open point; record it only once the owner approves (rules 6-8) |
 
-   A problem with an existing standard or playbook is an **improvement** ([git-issues](git-issues.md) rule 8); the same ask-first rule applies to it.
+   A problem with an existing standard, playbook or template is an **improvement** ([git-issues](git-issues.md) rule 8); the same ask-first rule applies to it, and it is never a `docs/state/gaps.md` row.
 2. **Raise it where it was found.** Every reply that finds one ends with an **Open points** block: each point, its word, and what is needed from the owner. Batch them into one block per reply. A point is never mentioned mid-paragraph and left.
 3. **The session never decides something is for later.** "Follow-up" is the owner's verdict on a point that was raised. The session does not sort a point into follow-up on its own, and does not propose an issue as the way to settle it. "Propose an issue" is not a kind of open point.
 4. **Scope is the owner's.** Narrowing or widening what the owner asked for is a decision point, not something the session does and reports.
