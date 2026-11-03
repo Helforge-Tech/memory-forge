@@ -44,10 +44,10 @@ mk; agents '| `gone/` | g |'
 want "repo map: a listed path that does not exist" "repo-map-missing~AGENTS.md~gone/"
 
 mk; mkdir other; echo x > other/f; git add other
+want "repo map: a tracked top-level folder that is not listed" "repo-map-unlisted~other"
 
 mk; mkdir other; echo x > other/f
 want "repo map: a new folder not yet added is seen" "repo-map-unlisted~other"
-want "repo map: a tracked top-level folder that is not listed" "repo-map-unlisted~other"
 
 mk; agents '' 'See [x](nope.md).'
 want "link to a missing path" "ref-missing~AGENTS.md~nope.md"
