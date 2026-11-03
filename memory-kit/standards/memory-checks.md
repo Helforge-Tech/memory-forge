@@ -18,6 +18,7 @@ check: memory-kit/checks/test-memory-check.sh, run by task test; task memory run
    - `repo-map-unlisted`: every tracked top-level folder (not starting with `.`) is in the repo map.
    - `ref-missing`: every markdown link in `AGENTS.md`, `CLAUDE.md`, the kit README, the plans index, skills, playbooks and standards points at a path that exists. Links in fenced code blocks (three backticks or `~~~`, even when the fence is indented) and in inline code are examples and are skipped. Not skipped: 4-space indented code blocks. Not checked: reference-style links (`[x]: path`) and paths that contain parentheses.
    - `link-malformed`: in the same files, a link that lost its opening parenthesis (`[x]path.md)`) fails; `ref-missing` cannot see it because it is not a link. Same skips as `ref-missing`.
+   - Checks that read the file list (`repo-map-unlisted`, briefs, plan rows) include new files not yet added, but not ignored ones, so a run before `git add` matches the run after.
    - `note-link-out`: a link in a tracked note in the vault folder does not point inside it (see [memory-notes](memory-notes.md)). Such notes also get `ref-missing`.
    - `ref-archived`: no such link points into a folder that holds an `ARCHIVED.md`.
    - `command-missing`: every `` `task <name>` `` in `AGENTS.md` is a task the task runner lists (`task --list-all`, so includes and namespaced tasks count; without `task`, the first `Taskfile.yml` or `Taskfile.yaml` is parsed).
