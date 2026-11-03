@@ -39,6 +39,10 @@
 set -euo pipefail
 export LC_ALL=C
 
+# tracked files plus new files not yet added (not ignored), so a check run before `git add`
+# sees what the commit will contain
+files_here() { git -c core.quotePath=false ls-files --cached --others --exclude-standard -- "$@"; }
+
 here=$(cd "$(dirname "$0")" && pwd)
 root=${CHECKS_REPO_ROOT:-$(git rev-parse --show-toplevel)}
 cd "$root"
@@ -58,7 +62,7 @@ if [ -f AGENTS.md ]; then
   done <<EOF
 $listed
 EOF
-  tops=$(git ls-files | awk -F/ 'NF > 1 && $1 !~ /^\./ { print $1 }' | sort -u)
+  tops=$(files_here | awk -F/ 'NF > 1 && $1 !~ /^\./ { print $1 }' | sort -u)
   while IFS= read -r d; do
     [ -n "$d" ] || continue
     printf '%s\n' "$listed" | grep -q "^${d}/*\$\|^${d}/" || emit repo-map-unlisted "$d"
@@ -99,7 +103,7 @@ fi
 
 # --- area briefs (standard memory-area-briefs) ----------------------------------------------------
 # A brief is a tracked AGENTS.md below the root, outside dot-folders.
-briefs=$(git ls-files | grep '/AGENTS\.md$' | grep -v '^\.' || true)
+briefs=$(files_here | grep '/AGENTS\.md$' | grep -v '^\.' || true)
 if [ -n "$briefs" ] && [ -f AGENTS.md ]; then
   # link_targets: markdown link targets on stdin, one per line, normalised like the link check
   # below (<wrapped>, title, %20, anchor, ./)
@@ -227,7 +231,7 @@ done
 # flat plan cannot hide from the index. A row may link `slug/...`, `./slug/...` or %20-encoded.
 if [ -f docs/plans/INDEX.md ]; then
   rows=$(grep '^|.*](' docs/plans/INDEX.md || true)
-  plans=$(git -c core.quotePath=false ls-files 'docs/plans/*' \
+  plans=$(files_here 'docs/plans/*' \
     | awk -F/ '$3 != "INDEX.md" { print (NF > 3) ? $3 "/" : $3 }' | sort -u)
   while IFS= read -r p; do
     [ -n "$p" ] || continue
