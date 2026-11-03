@@ -30,7 +30,7 @@
 #                        (otherwise the decisions check is skipped with a note)
 #   decision-number-duplicate  two files in docs/decisions share a number (key: the number)
 #   decision-edited      a decision differs from the merge base with $MEMORY_CHECK_BASE
-#                        (default origin/main) in any line but `- Status:`; also when deleted
+#                        (default origin/main) in any line but `- Status:`; also when deleted (a renumber, same slug and text but the title number, is not)
 #
 # Requires bash 3.2 or newer (macOS /bin/bash). The repo root is $CHECKS_REPO_ROOT, else
 # the git top level.
@@ -258,7 +258,18 @@ if git rev-parse --verify -q "$base^{commit}" >/dev/null 2>&1; then
 fi
 if [ -n "$mb" ]; then
   git ls-tree -r --name-only "$mb" -- docs/decisions | while IFS= read -r f; do
-    if [ ! -f "$f" ]; then emit decision-edited "$f" deleted; continue; fi
+    if [ ! -f "$f" ]; then
+      # a renumber is not an edit: same slug, and the same text but for the number in the title
+      slug=${f##*/}; slug=${slug#[0-9][0-9][0-9][0-9]-}
+      moved=""
+      for c in docs/decisions/[0-9][0-9][0-9][0-9]-"$slug"; do
+        [ -f "$c" ] || continue
+        if diff <(git show "$mb:$f" | grep -v '^- Status:' | sed '1s/^# [0-9]*/# N/') \
+                <(grep -v '^- Status:' "$c" | sed '1s/^# [0-9]*/# N/') >/dev/null; then moved=1; fi
+      done
+      [ -n "$moved" ] || emit decision-edited "$f" deleted
+      continue
+    fi
     if ! diff <(git show "$mb:$f" | grep -v '^- Status:') <(grep -v '^- Status:' "$f") >/dev/null; then
       emit decision-edited "$f"
     fi

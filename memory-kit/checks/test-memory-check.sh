@@ -146,6 +146,12 @@ want "decision body edited" "decision-edited~docs/decisions/0001-x.md"
 mk; rm docs/decisions/0001-x.md
 want "decision deleted" "decision-edited~docs/decisions/0001-x.md~deleted"
 
+mk; git mv docs/decisions/0001-x.md docs/decisions/0002-x.md; sed -i.bak '1s/^# 1/# 2/' docs/decisions/0002-x.md; rm docs/decisions/0002-x.md.bak
+clean "a decision renumbered with only its title number changed"
+
+mk; git mv docs/decisions/0001-x.md docs/decisions/0002-x.md; printf '# 2\n\n- Status: accepted\n- Date: d\n\nchanged\n' > docs/decisions/0002-x.md
+want "a renumbered decision with a changed body" "decision-edited~docs/decisions/0001-x.md~deleted"
+
 mk; printf '# 1\n\n- Status: superseded by 0002\n- Date: d\n\nbody\n' > docs/decisions/0001-x.md
 clean "a decision's status line may change"
 
