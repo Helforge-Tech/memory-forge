@@ -49,6 +49,9 @@ want "repo map: a tracked top-level folder that is not listed" "repo-map-unliste
 mk; agents '' 'See [x](nope.md).'
 want "link to a missing path" "ref-missing~AGENTS.md~nope.md"
 
+mk; agents '' 'a [x]docs/nope.md) link'
+want "link missing its opening parenthesis" "link-malformed~AGENTS.md~]docs/nope.md)"
+
 mk; agents '' 'See [x](docs/old/f.md#top).'; mkdir docs/old; echo x > docs/old/f.md; echo old > docs/old/ARCHIVED.md
 want "link into an archived folder" "ref-archived~AGENTS.md~docs/old/f.md#top"
 

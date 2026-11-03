@@ -9,6 +9,8 @@
 #   repo-map-unlisted    a tracked top-level folder is not in the repo map
 #   ref-missing          a markdown link in root guidance, a skill, a playbook or a standard
 #                        points at a path that does not exist (key: the link)
+#   link-malformed       a link in those files lost its opening parenthesis, `[x]path.md)`
+#                        (key: the text from the bracket)
 #   ref-archived         such a link points into a folder that holds ARCHIVED.md
 #   note-link-out        a link in a note under knowledge/ points outside knowledge/ or into
 #                        knowledge/personal/ (key: the link)
@@ -167,6 +169,14 @@ while IFS= read -r f; do
   # Fenced blocks and inline code are examples. A link may be <wrapped>, carry a "title"
   # and use %20 for a space; the key keeps the link as written.
   links=$(awk '/^[ \t]*(```|~~~)/{f=!f;next} !f' "$f" | sed 's/`[^`]*`//g' | grep -o '\]([^)]*)' | sed 's/^](//; s/)$//' | sort -u || true)
+  # a link whose opening parenthesis was lost, `[x]path.md)`, is not seen as a link above
+  broken=$(awk '/^[ \t]*(```|~~~)/{f=!f;next} !f' "$f" | sed 's/`[^`]*`//g' | grep -o '\][^( []*\.md)' | sort -u || true)
+  while IFS= read -r l; do
+    [ -n "$l" ] || continue
+    emit link-malformed "$f" "$l"
+  done <<EOF2
+$broken
+EOF2
   while IFS= read -r l; do
     [ -n "$l" ] || continue
     case $l in http*|mailto:*|'#'*|/*) continue ;; esac
