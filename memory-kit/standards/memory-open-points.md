@@ -3,8 +3,8 @@ title: Unsettled items are open points, raised and settled in the session; only 
 kind: memory
 scope: portable
 status: active
-updated: 2026-11-02
-decision: ../../docs/decisions/0041-open-points-settled-in-session-follow-ups-by-owner-decision.md
+updated: 2026-11-06
+decision: ../../docs/decisions/0044-fix-along-the-way-before-raising-a-point.md
 check: reviewer
 ---
 
@@ -12,10 +12,11 @@ check: reviewer
 
 ## Rule
 
-1. **Four words, four meanings.**
+1. **Five words, five meanings.** The first is checked before any other: a point is raised only when it is not a fix along the way.
 
    | Word | Means | What the session does |
    |---|---|---|
+   | **Fix along the way** | An inconsistency the current change caused or sits next to, with one sensible fix and no real cost: a stale line in a doc, a script header or a standard; a claim that no longer matches the code; a broken link | Fix it in the same PR, on the side of the split it belongs to; list it in one line under **Fixed along the way** in the reply and the PR body. Not an open point |
    | **Discussion point** | Something unsettled that turned up while working: an inconsistency, a problem outside the stated scope, a choice the session made that was really the owner's | Raise it with what was found and a recommendation |
    | **Decision point** | A discussion point that needs the owner's choice between real options | 2-3 options, a recommendation, the strongest objection; wait |
    | **Follow-up** | Work the owner decided, after the discussion, should be done but not now | An issue labelled `follow-up`, filed in the same turn |
@@ -24,7 +25,7 @@ check: reviewer
    A problem with an existing standard or playbook is an **improvement** ([git-issues](git-issues.md) rule 8); the same ask-first rule applies to it.
 2. **Raise it where it was found.** Every reply that finds one ends with an **Open points** block: each point, its word, and what is needed from the owner. Batch them into one block per reply. A point is never mentioned mid-paragraph and left.
 3. **The session never decides something is for later.** "Follow-up" is the owner's verdict on a point that was raised. The session does not sort a point into follow-up on its own, and does not propose an issue as the way to settle it. "Propose an issue" is not a kind of open point.
-4. **Scope is the owner's.** Narrowing or widening what the owner asked for is a decision point, not something the session does and reports.
+4. **Scope is the owner's.** Narrowing or widening what the owner asked for is a decision point, not something the session does and reports. Making text next to the change true again (a fix along the way) is not a change of scope.
 5. **A researchable point is researched now.** When the answer can be found (in the repo, the docs, comparable projects), the session finds it and proposes the fix with a recommendation in the same turn, rather than asking the owner to decide blind.
 6. **Nothing is written anywhere as a follow-up or a gap until the owner agrees:** no issue, no `docs/state/gaps.md` row, no handoff line. A point the owner rules "not now, not ever" is dropped, not parked.
 7. **A gap settled in the same turn needs no row:** an approved fix that is applied, or the owner's decision recorded in `docs/decisions/`, is its own record. **A gap left open gets a row in `docs/state/gaps.md`** once the owner approves recording it; if the gap is itself work (writing the missing standard, playbook or check), it also gets an issue labelled `gap`, and the row links it; work the owner decided to do later is a follow-up and gets `follow-up`, never `gap`. `gaps.md` stays the list that [roll-out-a-standard](../playbooks/roll-out-a-standard.md) ranks from. An approved improvement gets an issue labelled `improvement`.
@@ -58,4 +59,4 @@ Don't: add a row to `gaps.md` or a gap to a handoff without asking, or mention a
 
 ## Applied in
 
-`AGENTS.md` session rule 3; the handoff skill's **Open** and **Gaps** sections; `docs/state/gaps.md`. Replaces `memory-gap-handling` ([0037](../../docs/decisions/0037-gaps-sorted-when-found-and-owner-approved.md), [0038](../../docs/decisions/0038-gap-standard-renamed-and-settled-gaps-need-no-row.md)); see [0041](../../docs/decisions/0041-open-points-settled-in-session-follow-ups-by-owner-decision.md).
+`AGENTS.md` session rule 3; the handoff skill's **Open** and **Gaps** sections; `docs/state/gaps.md`. Replaces `memory-gap-handling` ([0037](../../docs/decisions/0037-gaps-sorted-when-found-and-owner-approved.md), [0038](../../docs/decisions/0038-gap-standard-renamed-and-settled-gaps-need-no-row.md)); see [0041](../../docs/decisions/0041-open-points-settled-in-session-follow-ups-by-owner-decision.md). Fixes along the way: [0044](../../docs/decisions/0044-fix-along-the-way-before-raising-a-point.md).
